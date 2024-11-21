@@ -1,0 +1,60 @@
+.navbar {
+    background: linear-gradient(180deg, #3E80C2 0%, #ffffff 100%);
+    /* padding: 0px; */
+    height: 100%;
+    width: 100%;
+    display: inline-block;
+    /* margin-right: 20px; */
+    vertical-align: middle;
+    justify-content: center;
+    /* margin: 0px; */
+}
+
+body {
+    margin:0;
+}
+
+.buttons-navbar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar li {
+    /* margin-right: 20px; */
+    flex-grow: 0;
+}
+
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
+.navbar a {
+    text-decoration: none;
+    color: black;
+    display: block;
+    padding: 20px 20px;
+    margin: 0px;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.navbar li:hover a {
+    background: linear-gradient(180deg, #0355a8 0%, #EEEEFF 100%);
+    color: white;
+}
+
+.navbar li:active a {
+    background: linear-gradient(180deg, #004993 0%, #EEEEFF 100%);
+    color: white;
+}

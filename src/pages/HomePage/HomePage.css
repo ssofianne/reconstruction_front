@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+ .homepage{
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+ }
+
+ .my-custom-font {
+    font-family: "Literata", Arial, sans-serif; 
+  }
+
+  .wide-container {
+    /* max-width: 2000px !important; */
+    justify-content: center;
+    align-items: center;
+  }
+
+  .button {
+    color: #3E80C2;
+  }
