@@ -2,11 +2,16 @@ import { FC, useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
 import {Work} from '../../modules/Work';
 import WorkCard from '../../components/WorkCard/WorkCard';
+import InputField from '../../components/InputField/InputField';
 import './WorksPage.css'
 
 const WorksPage = () => {
+    const [searchValue, setSearchValue] = useState<string>('');
+    const handleSearch = () => {
+        console.log('Поиск:', searchValue);
+    };
     const [works, setWorks] = useState<Work[]>([]);
-    const [title, setTitle] = useState('');
+    // const [title, setTitle] = useState('');
     const [count, setCount] = useState(0);
 
     return (
@@ -16,15 +21,15 @@ const WorksPage = () => {
                 <div className="reserch">
                     <form>
                         <p className="title_reserch">Общие работы</p>
-                        <input
-                        className="work_types"
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Вид работы"
+                        <InputField
+                            value={searchValue}
+                            setValue={setSearchValue}
+                            onSubmit={handleSearch}
+                            placeholder="Вид работы"
+                            loading={false} // Можно заменить на состояние загрузки
                         />
-                        <button className="reserch-button" type="submit" onClick={() => window.location.reload()}>Поиск</button>
-                        {count >= 0 && (
+                        {/* <button className="reserch-button" type="submit" onClick={() => window.location.reload()}>Поиск</button> */}
+                        {count > 0 && (
                             <div className="request">
                                 <img src="http://127.0.0.1:9000/fond-media/request.png" className="application" />
                                 <div className="sum-request">{count}</div>

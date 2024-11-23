@@ -11,7 +11,7 @@ const HomePage = () => {
                 Мы бережно восстанавливаем историческое наследие, используя современные технологии и традиционные методы.  
             </p>
             <Link to={ROUTES.WORKS}>
-            <Button className="button">Подробнее</Button>
+            <Button style={{ backgroundColor: '#3E80C2' }}>Подробнее</Button>
           </Link>
         </div>
     );
