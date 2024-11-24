@@ -8,7 +8,9 @@ const mockWorks: Work[] = [
 
 export const fetchWorks = async (): Promise<Work[]> => {
     try {
-        const response = await fetch('/works/'); // Запрос через прокси
+        // const response = await fetch('/works/'); // Запрос через прокси
+        const response = await fetch('http://localhost:8000/works/');
+        console.log('Статус ответа:', response.status);
 
         if (!response.ok) {
             console.error('Ошибка при получении данных:', response.status);
@@ -16,10 +18,19 @@ export const fetchWorks = async (): Promise<Work[]> => {
             return mockWorks;
         }
 
-        const data: { results: Work[] } = await response.json();
-        return data.results;
+        // Проверяем, что content-type соответствует JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            console.error('Сервер вернул не JSON');
+            const text = await response.text(); // Читаем текст ответа
+            console.log('Ответ сервера:', text);
+            
+            return mockWorks; // Возвращаем mock-данные
+        }
+        const data: { works: Work[] } = await response.json();
+        return data.works;
     } catch (error) {
-        console.error('Ошибка:', error);
+        console.error("Ошибка:", error)
         return mockWorks; // Возвращаем mock-данные при ошибке
     }
 };

@@ -1,15 +1,66 @@
-.card {
-    padding: 8px;
-}
-.loadingBg {
-    z-index: 999;
-    position: fixed;
-    height: 100%;
-    width: 100%;
+.card{
+    overflow: auto;
+    border-radius: 0px 0px 50px 0px;
+    background: linear-gradient(180deg, #3E80C2 0%, #72A9E0 100%);
+    /* padding: 10%; */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
 }
+.image{
+    display: block;
+    margin: 0;
+    padding: 0;
+    height: 300px;
+    width: 100%;
+    /* border-radius: 20px; */
+    object-fit: cover;
+}
+.info{
+    /* margin-top: 10px; */
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.title{
+    color: #ffffff;
+    margin-top: 16px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    font-weight: medium;
+    font-size: 20px;
+}
+.price{
+    color: #ffffff;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+.card-button{
+    padding: 10px 50px; 
+    border-radius: 50px;
+    color: #5D86B6;
+    background: white;
+    /* border: 1px solid #000000; */
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    font-weight: medium;
+    border: none;
+    cursor: pointer;
+}
+.down{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-left: 20px;
+}
+.down p{
+    font-size: 16px;
+    font-weight: 700;
+}
+
 .textStyle {
     height:48px;
     overflow:hidden;

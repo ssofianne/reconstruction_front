@@ -1,10 +1,10 @@
-import { FC, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
 import {Work, getWorkByName} from '../../modules/Work';
 import WorkCard from '../../components/WorkCard/WorkCard';
 import InputField from '../../components/InputField/InputField';
 import './WorksPage.css'
-import { Col, Row, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import { fetchWorks  } from '../../modules/mocks';
 
 
@@ -12,30 +12,67 @@ const WorksPage = () => {
     const [searchValue, setSearchValue] = useState('');
     const [loading, setLoading] = useState(false)
     const [works, setWorks] = useState<Work[]>([])
+    const [count, setCount] = useState(0);
 
-    const handleSearch = async () =>{
-        setLoading(true)
-        const result = await getWorkByName(searchValue)
-        setWorks(result.results)
-        setLoading(false)
-    }
+    // Функция для получения всех работ
+    const fetchAllWorks = async () => {
+        setLoading(true);
+        try {
+            const fetchedWorks = await fetchWorks(); // Получение всех работ
+            setWorks(fetchedWorks); // Устанавливаем работы для отображения
+        } catch (error) {
+            console.error('Ошибка при загрузке работ:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const fetchedWorks = await fetchWorks();
+    // Фильтрация работ по имени
+    const handleSearch = async () => {
+        setLoading(true);
+        try {
+            if (searchValue === '') {
+                // Если поле поиска пустое, показываем все работы
+                const fetchedWorks = await fetchWorks(); 
                 setWorks(fetchedWorks);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
+            } else {
+                // Если есть текст в поле поиска, отправляем запрос с фильтром
+                const work = await getWorkByName(searchValue);
+                setWorks(work.works);
             }
-        };
+        } catch (error) {
+            console.error('Ошибка при фильтрации работ:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        fetchData();
+    // Загружаем работы при монтировании компонента
+    useEffect(() => {
+        fetchAllWorks();
     }, []);
 
-    const [count, setCount] = useState(0);
+    // const handleSearch = async () =>{
+    //     setLoading(true)
+    //     const work = await getWorkByName(searchValue)
+    //     setWorks(work.works)
+    //     setLoading(false)
+    // }
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const fetchedWorks = await fetchWorks();
+    //             setWorks(fetchedWorks);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
+
+  
 
     return (
         <div>
@@ -44,9 +81,8 @@ const WorksPage = () => {
                 <div className="reserch">
                     <form>
                         <p className="title_reserch">Общие работы</p>
-                        <div className={`container ${loading && 'containerLoading'}`}>
+                        <div >
                             {loading && <div className="loadingBg"><Spinner animation="border"/></div>}
-
                             <InputField
                                 value={searchValue}
                                 setValue={(value) => setSearchValue(value)}
@@ -54,28 +90,25 @@ const WorksPage = () => {
                                 onSubmit={handleSearch}
                                 placeholder='Вид работы'
                             />
-
                             {count > 0 && (
                                 <div className="request">
                                     <img src="http://127.0.0.1:9000/fond-media/request.png" className="application" />
                                     <div className="sum-request">{count}</div>
                                 </div>
                             )}
-                            {/* {works.length > 0 && (
-                                <Row xs={4} md={4} className="g-4">
-                                    {works.map((work) => (
-                                    <WorkCard key={work.id} work={work} />
-                                ))}
-                                </Row>
-                            )}     */}
                         </div>
                     </form>
                 </div>
                 <div className="space">
                     <div className="container">
-                        {works.map((work) => (
-                            <WorkCard key={work.id} work={work}/>
-                        ))}
+                        {/* {loading && <div className="loadingBg"><Spinner animation="border"/></div>} */}
+                        {works.length === 0 ? (
+                            <div>К сожалению, такая работа не найдена...</div>
+                        ) : (
+                            works.map((work) => (
+                                <WorkCard key={work.id} work={work} />
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
@@ -85,6 +118,3 @@ const WorksPage = () => {
 
 export default WorksPage
 
-function setError(error: unknown) {
-    throw new Error('Function not implemented.');
-}

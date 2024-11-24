@@ -8,11 +8,11 @@ export interface Work {
 
 export interface WorkResult {
   resultCount: number
-  results: Work[]
+  works: Work[]
 }
 
 export const getWorkByName = async (work_title = ''): Promise<WorkResult> =>{
     return fetch(`/works/?work_title=${encodeURIComponent(work_title)}`)
         .then((response) => response.json())
-        .catch(()=> ({ resultCount:0, results:[] }))
+        .catch(()=> ({ resultCount:0, works:[] }))
 }

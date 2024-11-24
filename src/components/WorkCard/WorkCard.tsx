@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Work } from '../../modules/Work';
+import './WorkCard.css';
 
 type WorkCardProps = {
     work: Work; 
@@ -20,9 +21,9 @@ const WorkCard: React.FC<WorkCardProps>   = ({ work }) => {
           Подробнее
         </Link>
         <form method="post" action={`/work/${work.id}/add_work/`}>
-            <button className="main-block__button__add" type="submit">
-                Добавить
-            </button>
+          <button className="card-button" type="submit">
+            Добавить
+          </button>
         </form>
       </div>
     </div>
