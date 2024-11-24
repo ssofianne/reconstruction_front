@@ -41,7 +41,7 @@ const WorksPage = () => {
         setLoadingSearch(true);  // Устанавливаем состояние загрузки в true
         setIsSearchPerformed(true);
         try {
-            const result = await getWorkByName(searchValue);  // Получаем работы по имени
+            const result = await getWorkByName(searchValue);  // Получаем работы по названию
             setWorks(result.works);  // Обновляем список работ
         } catch (error) {
             console.error('Ошибка при фильтрации работ:', error);
