@@ -72,6 +72,11 @@ body{
     gap: 30px;
 }
 
+.no-results {
+    text-align: center; /* Пример: центрирование текста */
+    margin-top: 20px; /* Пример: отступ сверху */
+}
+
 .request{
     border: none;
     background-color: #ffffff;
