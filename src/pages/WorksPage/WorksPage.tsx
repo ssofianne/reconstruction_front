@@ -5,7 +5,7 @@ import WorkCard from '../../components/WorkCard/WorkCard';
 import InputField from '../../components/InputField/InputField';
 import './WorksPage.css'
 import { Spinner } from 'react-bootstrap';
-import { fetchWorks  } from '../../modules/mocks';
+import { fetchWorks } from '../../modules/mocks';
 
 
 const WorksPage = () => {
@@ -15,64 +15,34 @@ const WorksPage = () => {
     const [count, setCount] = useState(0);
 
     // Функция для получения всех работ
-    const fetchAllWorks = async () => {
-        setLoading(true);
-        try {
-            const fetchedWorks = await fetchWorks(); // Получение всех работ
-            setWorks(fetchedWorks); // Устанавливаем работы для отображения
-        } catch (error) {
-            console.error('Ошибка при загрузке работ:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Фильтрация работ по имени
-    const handleSearch = async () => {
-        setLoading(true);
-        try {
-            if (searchValue === '') {
-                // Если поле поиска пустое, показываем все работы
-                const fetchedWorks = await fetchWorks(); 
-                setWorks(fetchedWorks);
-            } else {
-                // Если есть текст в поле поиска, отправляем запрос с фильтром
-                const work = await getWorkByName(searchValue);
-                setWorks(work.works);
-            }
-        } catch (error) {
-            console.error('Ошибка при фильтрации работ:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Загружаем работы при монтировании компонента
     useEffect(() => {
+        const fetchAllWorks = async () => {
+            setLoading(true);
+            try {
+                const allWorks = await fetchWorks(); // Загружаем все работы
+                setWorks(allWorks);  // Обновляем список работ
+            } catch (error) {
+                console.error('Ошибка при загрузке работ:', error);
+            } finally {
+                setLoading(false);  // Завершаем загрузку
+            }
+        };
+
         fetchAllWorks();
     }, []);
 
-    // const handleSearch = async () =>{
-    //     setLoading(true)
-    //     const work = await getWorkByName(searchValue)
-    //     setWorks(work.works)
-    //     setLoading(false)
-    // }
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const fetchedWorks = await fetchWorks();
-    //             setWorks(fetchedWorks);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
-
-  
+    // Фильтрация работ по имени
+    const handleSearch = async () => {
+        setLoading(true);  // Устанавливаем состояние загрузки в true
+        try {
+            const result = await getWorkByName(searchValue);  // Получаем работы по имени
+            setWorks(result.works);  // Обновляем список работ
+        } catch (error) {
+            console.error('Ошибка при фильтрации работ:', error);
+        } finally {
+            setLoading(false);  // Завершаем загрузку
+        }
+    };
 
     return (
         <div>
