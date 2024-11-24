@@ -4,47 +4,47 @@ import {BreadCrumbs} from '../../components/Breadcrumbs/BreadCrumbs';
 import Header from '../../components/Header/Header';
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
 import { useParams } from "react-router-dom";
-import { Work, getWorkById } from "../../modules/Work";
-import { Col, Row, Spinner, Image } from "react-bootstrap";
-import { fetchWorks } from '../../modules/mocks';
-// import defaultImage from "/DefaultImage.jpg";
+import { Work } from "../../modules/Work";
+import { Spinner } from "react-bootstrap";
+import { fetchWork } from '../../modules/mocks';
 
 export const WorkDetailPage: FC = () => {
-  const [loading, setLoading] = useState(false)
-  const [work, setWork] = useState<Work>()
+  const { workId } = useParams();
+  const [work, setWork] = useState<Work | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const { pk } = useParams(); // ид страницы, пример: "/albums/12"
-
-    //   useEffect(() => {
-    //     if (!pk) return;
-    //     getWorkById(pk)
-    //     .then((response) => {
-    //         if (response.works && response.works.length > 0) {
-    //           setPageData(response.works[0]);  // Устанавливаем данные работы
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         console.error("Ошибка при загрузке работы:", error);
-    //       });
-    //   }, [pk]);
-
-    useEffect(() => {
-        const fetchWork = async () => {
-            try {
-                setLoading(true);
-                const fetchedWork = await getWorkById(parseInt(pk!, 10));
-                setWork(fetchedWork);
-            } catch (error: any) {
-                console.error("Ошибка при загрузке работы:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (pk) {
-            fetchWork();
+  useEffect(() => {
+    const fetchAndDisplayWork = async () => {
+        if (!workId) {
+            setError('ID работы не указан!');
+            setLoading(false);
+            return;
         }
-    }, [pk]);
+
+        try {
+            const numericWorkId = parseInt(workId, 10); // Преобразование в число
+            if (isNaN(numericWorkId)) {
+            setError('Неверный формат ID работы!');
+            setLoading(false);
+            return;
+            }
+
+            const fetchedWork = await fetchWork(numericWorkId);
+            setWork(fetchedWork);
+        } catch (error) {
+            setError('Ошибка при загрузке работы: ' + (error instanceof Error ? error.message : String(error)));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+        fetchAndDisplayWork();
+    }, [workId]);
+
+    if (loading) {
+        return <div>Загрузка...</div>;
+    }
 
   return (
     <div>

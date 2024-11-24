@@ -7,12 +7,8 @@ type WorkCardProps = {
     work: Work; 
 };
 
-
 const WorkCard: React.FC<WorkCardProps>   = ({ work }) => {
-  if (!work.pk) {
-    console.error('Ошибка: отсутствует work.id');
-    return null; // Можно вернуть null или какой-то fallback, если нет id
-  }
+
   return (
     <div className="card" key={work.pk}>
       <img src={work.imageurl || '../../assets/default_image.png'} className="image" />

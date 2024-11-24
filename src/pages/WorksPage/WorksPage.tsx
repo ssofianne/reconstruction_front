@@ -8,7 +8,6 @@ import './WorksPage.css'
 import { Spinner } from 'react-bootstrap';
 import { fetchWorks } from '../../modules/mocks';
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
-import { useNavigate } from "react-router-dom";
 
 
 const WorksPage = () => {
@@ -16,7 +15,7 @@ const WorksPage = () => {
     const [loading, setLoading] = useState(false)
     const [works, setWorks] = useState<Work[]>([])
     const [count, setCount] = useState(0);
-    const navigate = useNavigate();
+    const [isSearchPerformed, setIsSearchPerformed] = useState(false);
 
     // Функция для получения всех работ
     useEffect(() => {
@@ -39,6 +38,7 @@ const WorksPage = () => {
     // Фильтрация работ по имени
     const handleSearch = async () => {
         setLoading(true);  // Устанавливаем состояние загрузки в true
+        setIsSearchPerformed(true);
         try {
             const result = await getWorkByName(searchValue);  // Получаем работы по имени
             setWorks(result.works);  // Обновляем список работ
@@ -49,18 +49,12 @@ const WorksPage = () => {
         }
     };
 
-    const handleCardClick = (id: number) => {
-        // клик на карточку, переход на страницу альбома
-        navigate(`${ROUTES.WORKS}/${id}`);
-    };
-
     return (
         <div>
             <Header /> 
             <BreadCrumbs
                 crumbs={[
                 { label: ROUTE_LABELS.WORKS, path: ROUTES.WORKS },
-                // { label: pageData?.collectionCensoredName || "Альбом" },
                 ]}
             />
             <div className="page_container">
@@ -87,10 +81,10 @@ const WorksPage = () => {
                 </div>
                 <div className="space">
                     <div className="container">
-                        {/* {loading && <div className="loadingBg"><Spinner animation="border"/></div>} */}
-                        {works.length === 0 ? (
+                        {loading && <div className="loadingBg"><Spinner animation="border"/></div>}
+                        {isSearchPerformed && works.length === 0 ? (
                             <div>К сожалению, такая работа не найдена...</div>
-                        ) : (
+                        ): (
                             works.map((work) => (
                                 <WorkCard key={work.pk} work={work} />
                             ))
