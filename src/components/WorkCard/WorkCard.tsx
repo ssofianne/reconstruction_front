@@ -9,18 +9,22 @@ type WorkCardProps = {
 
 
 const WorkCard: React.FC<WorkCardProps>   = ({ work }) => {
+  if (!work.pk) {
+    console.error('Ошибка: отсутствует work.id');
+    return null; // Можно вернуть null или какой-то fallback, если нет id
+  }
   return (
-    <div className="card" key={work.id}>
+    <div className="card" key={work.pk}>
       <img src={work.imageurl || '../../assets/default_image.png'} className="image" />
       <div className="info">
         <p className="title">{work.title}</p>
         <p className="price">{work.price} ₽/м²</p>
       </div>
       <div className="down">
-        <Link to={`/work/${work.id}`} className="card-button">
+        <Link to={`/work/${work.pk}/`} className="card-button">
           Подробнее
         </Link>
-        <form method="post" action={`/work/${work.id}/add_work/`}>
+        <form method="post" action={`/work/${work.pk}/add_work/`}>
           <button className="card-button" type="submit">
             Добавить
           </button>

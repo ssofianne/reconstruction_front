@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
+import {BreadCrumbs}     from '../../components/Breadcrumbs/BreadCrumbs';
 import {Work, getWorkByName} from '../../modules/Work';
 import WorkCard from '../../components/WorkCard/WorkCard';
 import InputField from '../../components/InputField/InputField';
 import './WorksPage.css'
 import { Spinner } from 'react-bootstrap';
 import { fetchWorks } from '../../modules/mocks';
+import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
+import { useNavigate } from "react-router-dom";
 
 
 const WorksPage = () => {
@@ -13,6 +16,7 @@ const WorksPage = () => {
     const [loading, setLoading] = useState(false)
     const [works, setWorks] = useState<Work[]>([])
     const [count, setCount] = useState(0);
+    const navigate = useNavigate();
 
     // Функция для получения всех работ
     useEffect(() => {
@@ -20,6 +24,7 @@ const WorksPage = () => {
             setLoading(true);
             try {
                 const allWorks = await fetchWorks(); // Загружаем все работы
+                console.log('Полученные данные:', allWorks);
                 setWorks(allWorks);  // Обновляем список работ
             } catch (error) {
                 console.error('Ошибка при загрузке работ:', error);
@@ -44,9 +49,20 @@ const WorksPage = () => {
         }
     };
 
+    const handleCardClick = (id: number) => {
+        // клик на карточку, переход на страницу альбома
+        navigate(`${ROUTES.WORKS}/${id}`);
+    };
+
     return (
         <div>
             <Header /> 
+            <BreadCrumbs
+                crumbs={[
+                { label: ROUTE_LABELS.WORKS, path: ROUTES.WORKS },
+                // { label: pageData?.collectionCensoredName || "Альбом" },
+                ]}
+            />
             <div className="page_container">
                 <div className="reserch">
                     <form>
@@ -55,7 +71,7 @@ const WorksPage = () => {
                             {loading && <div className="loadingBg"><Spinner animation="border"/></div>}
                             <InputField
                                 value={searchValue}
-                                setValue={(value) => setSearchValue(value)}
+                                setValue={setSearchValue}
                                 loading={loading}
                                 onSubmit={handleSearch}
                                 placeholder='Вид работы'
@@ -76,7 +92,7 @@ const WorksPage = () => {
                             <div>К сожалению, такая работа не найдена...</div>
                         ) : (
                             works.map((work) => (
-                                <WorkCard key={work.id} work={work} />
+                                <WorkCard key={work.pk} work={work} />
                             ))
                         )}
                     </div>

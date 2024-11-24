@@ -1,9 +1,9 @@
 import { Work } from '../modules/Work'; 
 
 const mockWorks: Work[] = [
-  {id: 1, imageurl: 'src/assets/default_image.png', title: 'Работа 1', price: 4000, description: 'Описание отсутствует'},
-  {id: 2, imageurl: 'src/assets/default_image.png', title: 'Работа 2', price: 4000, description: 'Описание отсутствует'},
-  {id: 3, imageurl: 'src/assets/default_image.png', title: 'Работа 3', price: 4000, description: 'Описание отсутствует'},
+  {pk: 1, imageurl: 'src/assets/default_image.png', title: 'Работа 1', price: 4000, description: 'Описание отсутствует'},
+  {pk: 2, imageurl: 'src/assets/default_image.png', title: 'Работа 2', price: 4000, description: 'Описание отсутствует'},
+  {pk: 3, imageurl: 'src/assets/default_image.png', title: 'Работа 3', price: 4000, description: 'Описание отсутствует'},
 ];
 
 export const fetchWorks = async (): Promise<Work[]> => {
