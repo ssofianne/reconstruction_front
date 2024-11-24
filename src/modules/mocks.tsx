@@ -47,13 +47,11 @@ export const fetchWork = async (workId: number): Promise<Work | null> => {
     try {
         const response = await fetch(`http://localhost:8000/works/${workId}/`); //Обратите внимание на `${workId}/`
         console.log('Статус ответа:', response.status);
-
         if (!response.ok) {
             console.error('Ошибка при получении данных:', response.status);
             //Возвращаем mock-данные при ошибке
             return mockWork;
         }
-
         // Проверяем, что content-type соответствует JSON
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {

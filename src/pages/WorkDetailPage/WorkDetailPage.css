@@ -3,7 +3,6 @@
     height: 100vh;
     margin: 0 68px 0 68px;
     margin-top: 45px;
-
 }
 .page-title{
     height: 66px;
@@ -24,7 +23,6 @@
 .content-img{
     width: 404px;
     height: 285px;
-
 }
 .image-wrapper img{
     width: 100%;
@@ -34,7 +32,6 @@
     width: 810px;
     height: 285px;
 }
-
 .garanties-wrapper{
     margin: 20px;
     display: flex;
@@ -44,11 +41,9 @@
     padding: 10px;
     border-bottom: 1px solid #ccc;
 }
-
 .garanties div:last-child {
     border-bottom: none; 
 } */
-
 .making-progect, .working-time{
     width: 750px;
     height: 48px;
@@ -58,7 +53,6 @@
     margin-top: 6px;
     margin-bottom: 6px;
 }
-
 .work-garant{
     width: 750px;
     height: 48px;
@@ -66,7 +60,6 @@
     line-height: 27px;
     margin-top: 6px;
 }
-
 .work-price{
     width: 750px;
     height: 48px;
@@ -77,10 +70,7 @@
     align-items: center;
     /* justify-content: space-between; */
     gap: 500px;
-
 }
-
-
 .subtitle{
     font-size: 20px;
     line-height: 27px;

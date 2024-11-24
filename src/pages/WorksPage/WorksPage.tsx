@@ -12,7 +12,8 @@ import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
 
 const WorksPage = () => {
     const [searchValue, setSearchValue] = useState('');
-    const [loading, setLoading] = useState(false)
+    const [loadingSearch, setLoadingSearch] = useState(false)
+    const [loadingWorks, setLoadingWorks] = useState(false)
     const [works, setWorks] = useState<Work[]>([])
     const [count, setCount] = useState(0);
     const [isSearchPerformed, setIsSearchPerformed] = useState(false);
@@ -20,7 +21,7 @@ const WorksPage = () => {
     // Функция для получения всех работ
     useEffect(() => {
         const fetchAllWorks = async () => {
-            setLoading(true);
+            setLoadingWorks(true);
             try {
                 const allWorks = await fetchWorks(); // Загружаем все работы
                 console.log('Полученные данные:', allWorks);
@@ -28,7 +29,7 @@ const WorksPage = () => {
             } catch (error) {
                 console.error('Ошибка при загрузке работ:', error);
             } finally {
-                setLoading(false);  // Завершаем загрузку
+                setLoadingWorks(false);  // Завершаем загрузку
             }
         };
 
@@ -37,7 +38,7 @@ const WorksPage = () => {
 
     // Фильтрация работ по имени
     const handleSearch = async () => {
-        setLoading(true);  // Устанавливаем состояние загрузки в true
+        setLoadingSearch(true);  // Устанавливаем состояние загрузки в true
         setIsSearchPerformed(true);
         try {
             const result = await getWorkByName(searchValue);  // Получаем работы по имени
@@ -45,7 +46,7 @@ const WorksPage = () => {
         } catch (error) {
             console.error('Ошибка при фильтрации работ:', error);
         } finally {
-            setLoading(false);  // Завершаем загрузку
+            setLoadingSearch(false);  // Завершаем загрузку
         }
     };
 
@@ -62,11 +63,11 @@ const WorksPage = () => {
                     <form>
                         <p className="title_reserch">Общие работы</p>
                         <div >
-                            {loading && <div className="loadingBg"><Spinner animation="border"/></div>}
+                            {loadingSearch && <div className="loadingBg"><Spinner animation="border"/></div>}
                             <InputField
                                 value={searchValue}
                                 setValue={setSearchValue}
-                                loading={loading}
+                                loading={loadingSearch}
                                 onSubmit={handleSearch}
                                 placeholder='Вид работы'
                             />
@@ -81,10 +82,10 @@ const WorksPage = () => {
                 </div>
                 <div className="space">
                     <div className="container">
-                        {loading && <div className="loadingBg"><Spinner animation="border"/></div>}
+                        {loadingWorks && <div className="loadingBg"><Spinner animation="border"/></div>}
                         {isSearchPerformed && works.length === 0 ? (
                             <div>К сожалению, такая работа не найдена...</div>
-                        ): (
+                        ) : (
                             works.map((work) => (
                                 <WorkCard key={work.pk} work={work} />
                             ))

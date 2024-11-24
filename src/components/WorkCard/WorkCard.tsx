@@ -7,6 +7,7 @@ type WorkCardProps = {
     work: Work; 
 };
 
+
 const WorkCard: React.FC<WorkCardProps>   = ({ work }) => {
 
   return (

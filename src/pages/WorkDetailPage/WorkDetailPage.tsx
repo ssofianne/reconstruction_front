@@ -9,41 +9,38 @@ import { Spinner } from "react-bootstrap";
 import { fetchWork } from '../../modules/mocks';
 
 export const WorkDetailPage: FC = () => {
-  const { workId } = useParams();
-  const [work, setWork] = useState<Work | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+    const { workId } = useParams();
+    const [work, setWork] = useState<Work | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchAndDisplayWork = async () => {
-        if (!workId) {
-            setError('ID работы не указан!');
-            setLoading(false);
-            return;
-        }
-
-        try {
-            const numericWorkId = parseInt(workId, 10); // Преобразование в число
-            if (isNaN(numericWorkId)) {
-            setError('Неверный формат ID работы!');
-            setLoading(false);
-            return;
+    useEffect(() => {
+        const fetchAndDisplayWork = async () => {
+            if (!workId) {
+                setError('ID работы не указан!');
+                setLoading(false);
+                return;
             }
-
+            try {
+                const numericWorkId = parseInt(workId, 10); // Преобразование в число
+                if (isNaN(numericWorkId)) {
+                setError('Неверный формат ID работы!');
+                setLoading(false);
+                return;
+            }
             const fetchedWork = await fetchWork(numericWorkId);
             setWork(fetchedWork);
-        } catch (error) {
-            setError('Ошибка при загрузке работы: ' + (error instanceof Error ? error.message : String(error)));
-        } finally {
-            setLoading(false);
-        }
-    };
-
+            } catch (error) {
+                setError('Ошибка при загрузке работы: ' + (error instanceof Error ? error.message : String(error)));
+            } finally {
+                setLoading(false);
+            }
+        };
         fetchAndDisplayWork();
     }, [workId]);
 
     if (loading) {
-        return <div>Загрузка...</div>;
+        return <div>{loading && <div className="loadingBg"><Spinner animation="border"/></div>}</div>;
     }
 
   return (
