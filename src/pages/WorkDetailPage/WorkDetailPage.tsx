@@ -88,7 +88,7 @@ export const WorkDetailPage: FC = () => {
                 </div>
             </div>
         ) : (
-            <div className="album_page_loader_block">{/* загрузка */}
+            <div>{/* загрузка */}
             <Spinner animation="border" />
             </div>
         )}
