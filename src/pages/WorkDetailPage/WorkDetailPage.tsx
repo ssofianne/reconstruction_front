@@ -1,4 +1,3 @@
-import "./WorkDetailPage.css";
 import { FC, useEffect, useState } from "react";
 import {BreadCrumbs} from '../../components/Breadcrumbs/BreadCrumbs';
 import Header from '../../components/Header/Header';
@@ -7,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { Work } from "../../modules/Work";
 import { Spinner } from "react-bootstrap";
 import { fetchWork } from '../../modules/mocks';
+import "./WorkDetailPage.css";
 
 export const WorkDetailPage: FC = () => {
     const { workId } = useParams();

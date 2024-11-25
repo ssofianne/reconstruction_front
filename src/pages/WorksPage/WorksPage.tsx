@@ -4,10 +4,10 @@ import {BreadCrumbs}     from '../../components/Breadcrumbs/BreadCrumbs';
 import {Work, getWorkByName} from '../../modules/Work';
 import WorkCard from '../../components/WorkCard/WorkCard';
 import InputField from '../../components/InputField/InputField';
-import './WorksPage.css'
 import { Spinner } from 'react-bootstrap';
 import { fetchWorks } from '../../modules/mocks';
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
+import './WorksPage.css'
 
 
 const WorksPage = () => {
