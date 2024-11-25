@@ -17,18 +17,22 @@ export const WorkDetailPage: FC = () => {
     useEffect(() => {
         const fetchAndDisplayWork = async () => {
             if (!workId) {
-                setError('ID работы не указан!');
+                setError('ID работы не указан');
                 setLoading(false);
                 return;
             }
             try {
-                const numericWorkId = parseInt(workId, 10); // Преобразование в число
+                const numericWorkId = parseInt(workId, 10);
                 if (isNaN(numericWorkId)) {
-                setError('Неверный формат ID работы!');
+                setError('Неверный формат ID работы');
                 setLoading(false);
                 return;
             }
             const fetchedWork = await fetchWork(numericWorkId);
+            if (fetchedWork === undefined || fetchedWork === null) {
+                setError('Работа не найдена');
+                return;
+            }
             setWork(fetchedWork);
             } catch (error) {
                 setError('Ошибка при загрузке работы: ' + (error instanceof Error ? error.message : String(error)));
