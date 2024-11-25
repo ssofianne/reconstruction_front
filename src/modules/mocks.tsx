@@ -13,24 +13,14 @@ export const fetchWorks = async (): Promise<Work[]> => {
 
         if (!response.ok) {
             console.error('Ошибка при получении данных:', response.status);
-            //Возвращаем mock-данные при ошибке
             return mockWorks;
         }
 
-        // Проверяем, что content-type соответствует JSON
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            console.error('Сервер вернул не JSON');
-            const text = await response.text(); // Читаем текст ответа
-            console.log('Ответ сервера:', text);
-            
-            return mockWorks; // Возвращаем mock-данные
-        }
         const data: { works: Work[] } = await response.json();
         return data.works;
     } catch (error) {
         console.error("Ошибка:", error)
-        return mockWorks; // Возвращаем mock-данные при ошибке
+        return mockWorks; 
     }
 };
 
@@ -40,26 +30,15 @@ export const fetchWork = async (workId: number): Promise<Work | undefined> => {
         console.log('Статус ответа:', response.status);
         if (!response.ok) {
             console.error('Ошибка при получении данных:', response.status);
-            // Ищем работу в mockWorks
             const work = mockWorks.find(work => work.pk === workId);
-            return work; // Возвращаем найденную работу или undefined
+            return work; 
         }
-        //Проверяем, что content-type соответствует JSON
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            console.error('Сервер вернул не JSON');
-            const text = await response.text(); // Читаем текст ответа
-            console.error('Ответ сервера:', text);
-            // Ищем работу в mockWorks
-            const work = mockWorks.find(work => work.pk === workId);
-            return work; // Возвращаем найденную работу или undefined
-        }
+
         const data: Work = await response.json();
         return data;
     } catch (error) {
         console.error("Ошибка:", error);
-        // Ищем работу в mockWorks
         const work = mockWorks.find(work => work.pk === workId);
-        return work; // Возвращаем найденную работу или undefined
+        return work; 
     }
 };
