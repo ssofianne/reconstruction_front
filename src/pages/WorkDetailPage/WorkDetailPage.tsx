@@ -61,7 +61,7 @@ export const WorkDetailPage: FC = () => {
                     <div className="content-info">
                         <div className="content-img">
                             <div className="image-wrapper">
-                                <img src={work.imageurl || '../../assets/default.jpg'} className="work-image" alt={work.title}/>
+                                <img src={work.imageurl || 'src/assets/default_image.png'} className="work-image" alt={work.title}/>
                             </div>
                         </div>
                         <div className="garanties">

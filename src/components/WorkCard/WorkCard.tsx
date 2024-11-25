@@ -12,7 +12,7 @@ const WorkCard: React.FC<WorkCardProps>   = ({ work }) => {
 
   return (
     <div className="card" key={work.pk}>
-      <img src={work.imageurl || '../../assets/default_image.png'} className="image" />
+      <img src={work.imageurl || 'src/assets/default_image.png'} className="image" />
       <div className="info">
         <p className="title">{work.title}</p>
         <p className="price">{work.price} ₽/м²</p>
