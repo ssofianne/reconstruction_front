@@ -1,13 +1,14 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import Header from '../../components/Header/Header';
 import {BreadCrumbs}     from '../../components/Breadcrumbs/BreadCrumbs';
-import {Work, getWorkByName} from '../../modules/Work';
+import {Work} from '../../modules/Work';
 import WorkCard from '../../components/WorkCard/WorkCard';
-import InputField from '../../components/InputField/InputField';
+import '../../components/InputField/InputField.css';
 import { Spinner } from 'react-bootstrap';
 import { fetchWorks } from '../../modules/mocks';
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
 import './WorksPage.css'
+
 
 
 const WorksPage = () => {
@@ -16,7 +17,7 @@ const WorksPage = () => {
     const [loadingWorks, setLoadingWorks] = useState(false)
     const [works, setWorks] = useState<Work[]>([])
     const [count, setCount] = useState(0);
-    const [isSearchPerformed, setIsSearchPerformed] = useState(false);
+    const [flagSearch, setFlagSearch] = useState(false)
 
     // Функция для получения всех работ
     useEffect(() => {
@@ -44,13 +45,14 @@ const WorksPage = () => {
 
     // Обработчик изменения в текстовом поле
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value); // Обновляем временное состояние
+        setInputValue(event.target.value); 
     };
 
     // Обработчик нажатия кнопки поиска
-    const handleSearchClick = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSearchClick = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Предотвращаем отправку формы
-        setSearchWork(inputValue); // Обновляем основное состояние
+        setSearchWork(inputValue);
+        setFlagSearch(true);
     };
 
     return (
@@ -65,7 +67,7 @@ const WorksPage = () => {
                 <div className="reserch">
                     <form onSubmit={handleSearchClick}>
                         <p className="title_reserch">Общие работы</p>
-                        <div >
+                        <div className="inputField">
                             <input
                                 type="text"
                                 value={inputValue}
@@ -85,7 +87,7 @@ const WorksPage = () => {
                 <div className="space">
                     <div className="container">
                         {loadingWorks && <div className="loadingBg"><Spinner animation="border"/></div>}
-                        {works.length === 0 ? (
+                        {flagSearch && works.length === 0 ? (
                             <div>К сожалению, такая работа не найдена...</div>
                         ) : (
                             works.map((work) => (
