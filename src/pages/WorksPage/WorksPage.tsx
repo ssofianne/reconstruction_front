@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import Header from '../../components/Header/Header';
 import {BreadCrumbs}     from '../../components/Breadcrumbs/BreadCrumbs';
 import {Work, getWorkByName} from '../../modules/Work';
@@ -11,8 +11,8 @@ import './WorksPage.css'
 
 
 const WorksPage = () => {
-    const [searchValue, setSearchValue] = useState('');
-    const [loadingSearch, setLoadingSearch] = useState(false)
+    const [searchWork, setSearchWork] = useState('');
+    const [inputValue, setInputValue] = useState('');
     const [loadingWorks, setLoadingWorks] = useState(false)
     const [works, setWorks] = useState<Work[]>([])
     const [count, setCount] = useState(0);
@@ -23,7 +23,13 @@ const WorksPage = () => {
         const fetchAllWorks = async () => {
             setLoadingWorks(true);
             try {
-                const allWorks = await fetchWorks(); // Загружаем все работы
+                let allWorks = await fetchWorks(); // Загружаем все работы
+                if (searchWork) {
+                    const lowerCaseWork = searchWork.toLowerCase();
+                    allWorks = allWorks.filter(work =>
+                        work.title.toLowerCase().includes(lowerCaseWork)
+                    );
+                }
                 console.log('Полученные данные:', allWorks);
                 setWorks(allWorks);  // Обновляем список работ
             } catch (error) {
@@ -34,20 +40,17 @@ const WorksPage = () => {
         };
 
         fetchAllWorks();
-    }, []);
+    }, [searchWork]);
 
-    // Фильтрация работ по имени
-    const handleSearch = async () => {
-        setLoadingSearch(true);  // Устанавливаем состояние загрузки в true
-        setIsSearchPerformed(true);
-        try {
-            const result = await getWorkByName(searchValue);  // Получаем работы по названию
-            setWorks(result.works);  // Обновляем список работ
-        } catch (error) {
-            console.error('Ошибка при фильтрации работ:', error);
-        } finally {
-            setLoadingSearch(false);  // Завершаем загрузку
-        }
+    // Обработчик изменения в текстовом поле
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value); // Обновляем временное состояние
+    };
+
+    // Обработчик нажатия кнопки поиска
+    const handleSearchClick = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); // Предотвращаем отправку формы
+        setSearchWork(inputValue); // Обновляем основное состояние
     };
 
     return (
@@ -60,17 +63,16 @@ const WorksPage = () => {
             />
             <div className="page_container">
                 <div className="reserch">
-                    <form>
+                    <form onSubmit={handleSearchClick}>
                         <p className="title_reserch">Общие работы</p>
                         <div >
-                            {loadingSearch && <div className="loadingBg"><Spinner animation="border"/></div>}
-                            <InputField
-                                value={searchValue}
-                                setValue={setSearchValue}
-                                loading={loadingSearch}
-                                onSubmit={handleSearch}
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={handleInputChange}
                                 placeholder='Вид работы'
                             />
+                            <button type="submit">Поиск</button>
                             {count > 0 && (
                                 <div className="request">
                                     <img src="http://127.0.0.1:9000/fond-media/request.png" className="application" />
@@ -83,7 +85,7 @@ const WorksPage = () => {
                 <div className="space">
                     <div className="container">
                         {loadingWorks && <div className="loadingBg"><Spinner animation="border"/></div>}
-                        {isSearchPerformed && works.length === 0 ? (
+                        {works.length === 0 ? (
                             <div>К сожалению, такая работа не найдена...</div>
                         ) : (
                             works.map((work) => (

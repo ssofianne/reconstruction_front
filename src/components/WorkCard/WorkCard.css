@@ -1,6 +1,6 @@
 .card{
     overflow: auto;
-    border-radius: 0px 0px 50px 0px;
+    border-radius: 0px 0px 50px 0px !important;
     background: linear-gradient(180deg, #3E80C2 0%, #72A9E0 100%);
     /* padding: 10%; */
     display: flex;
