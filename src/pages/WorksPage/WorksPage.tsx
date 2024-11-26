@@ -9,8 +9,6 @@ import { fetchWorks } from '../../modules/mocks';
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
 import './WorksPage.css'
 
-
-
 const WorksPage = () => {
     const [searchWork, setSearchWork] = useState('');
     const [inputValue, setInputValue] = useState('');

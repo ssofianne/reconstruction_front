@@ -35,7 +35,7 @@ export const WorkDetailPage: FC = () => {
             }
             setWork(fetchedWork);
             } catch (error) {
-                setError('Ошибка при загрузке работы: ' + (error instanceof Error ? error.message : String(error)));
+                setError('Ошибка при загрузке работы');
             } finally {
                 setLoading(false);
             }
