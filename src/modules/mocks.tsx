@@ -18,7 +18,7 @@ export const fetchWorks = async (): Promise<Work[]> => {
         const data: { works: Work[] } = await response.json();
         return data.works;
     } catch (error) {
-        console.error("Ошибка:", error)
+        console.log('Ошибка:', error);
         return mockWorks;
     }
 };
