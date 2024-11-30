@@ -1,4 +1,5 @@
-# React + TypeScript + Vite
+# Сбор средств на реконструкцию исторических зданий
+Бэкенд: https://github.com/ssofianne/rip
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
