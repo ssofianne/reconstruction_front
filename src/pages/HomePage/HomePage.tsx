@@ -12,7 +12,8 @@ const HomePage = () => {
     const images = [
         "src/assets/image1.png",
         "src/assets/image2.jpg",
-        "src/assets/image3.jpg"
+        "src/assets/image3.jpg",
+        // "src/assets/image4.jpg"
     ];
 
     return (
