@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
+
  .homepage{
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     height: 100vh;
     width: 100%;
@@ -17,5 +18,17 @@
     /* max-width: 2000px !important; */
     justify-content: center;
     align-items: center;
+  }
+
+  .swiper-slide img {
+    width: 100%;
+    height: auto;
+    max-height: 500px; /* Ограничение по высоте */
+    object-fit: cover; /* Масштабирование изображения */
+  }
+
+  .swiper {
+    width: 80%; /* Контролируйте ширину */
+    margin: 0 auto; /* Центрируйте слайдер */
   }
 

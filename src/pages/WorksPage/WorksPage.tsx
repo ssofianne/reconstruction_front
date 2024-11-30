@@ -48,7 +48,7 @@ const WorksPage = () => {
 
     // Обработчик нажатия кнопки поиска
     const handleSearchClick = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Предотвращаем отправку формы
+        event.preventDefault();
         setSearchWork(inputValue);
         setFlagSearch(true);
     };
