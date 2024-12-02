@@ -1,4 +1,4 @@
-import React, { Component, ChangeEvent, FormEvent } from 'react';
+import { Component, ChangeEvent, FormEvent } from 'react';
 import Header from '../../components/Header/Header';
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
 import { Work } from '../../modules/Work';
@@ -36,7 +36,8 @@ class WorksPage extends Component<{}, WorksPageState> {
     }
 
     componentDidUpdate(prevProps: {}, prevState: WorksPageState) {
-        if (prevState.searchWork !== this.state.searchWork) {
+        // Проверяем, изменился ли searchWork
+        if (prevState.searchWork !== this.state.searchWork || prevState.flagSearch !== this.state.flagSearch) {
             this.fetchAllWorks();
         }
     }
@@ -52,7 +53,7 @@ class WorksPage extends Component<{}, WorksPageState> {
                 );
             }
             console.log('Полученные данные:', allWorks);
-            this.setState({ works: allWorks });
+            this.setState({ works: allWorks});
         } catch (error) {
             console.error('Ошибка при загрузке работ:', error);
         } finally {
@@ -79,9 +80,7 @@ class WorksPage extends Component<{}, WorksPageState> {
             <div>
                 <Header />
                 <BreadCrumbs
-                    crumbs={[
-                        { label: ROUTE_LABELS.WORKS, path: ROUTES.WORKS },
-                    ]}
+                    crumbs={[{ label: ROUTE_LABELS.WORKS, path: ROUTES.WORKS }]}
                 />
                 <div className="page_container">
                     <div className="reserch">

@@ -2,17 +2,15 @@ import './HomePage.css'
 import Header from '../../components/Header/Header';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+
 
 
 const HomePage = () => {
 
     const images = [
-        "src/assets/image1.png",
-        "src/assets/image2.jpg",
-        "src/assets/image3.jpg",
+        "/reconstruction_front/swiper/image1.png",
+        "/reconstruction_front/swiper/image2.jpg",
+        "/reconstruction_front/swiper/image3.jpg",
         // "src/assets/image4.jpg"
     ];
 
