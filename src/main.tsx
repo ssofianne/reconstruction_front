@@ -2,12 +2,16 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import {BrowserRouter} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
-// import { createBrowserRouter, RouterProvider, Link } from 'react-router-dom'
-// import './index.css'
+import { Provider } from 'react-redux';
+// import storage from '/src/redux/store';
+import storage from './redux/store.ts';
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter basename="/reconstruction_front">
+    <Provider store={storage}>
       <App />
+    </Provider>
   </BrowserRouter>
 )
 

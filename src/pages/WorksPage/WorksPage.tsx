@@ -1,4 +1,5 @@
 import { Component, ChangeEvent, FormEvent } from 'react';
+import { connect } from 'react-redux';
 import Header from '../../components/Header/Header';
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
 import { Work } from '../../modules/Work';
