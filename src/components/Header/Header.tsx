@@ -11,7 +11,7 @@ const Header = () => {
             <div className='logo'>
                 <div className="logo-wrapper">
                     <Link to={'/'}> 
-                        <img src={'http://127.0.0.1:9000/fond-media/logo.png'} alt="Логотип фонда" />
+                        <img src={'/reconstruction_front/logo.png'} alt="Логотип фонда" />
                     </Link>
                 </div>
                 <div className="text-wrapper">

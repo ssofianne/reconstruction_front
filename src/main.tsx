@@ -10,3 +10,16 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <App />
   </BrowserRouter>
 )
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker
+      .register("reconstruction_front/serviceWorker.js")
+      .then((registration) => {
+        console.log('Service Worker зарегистрирован: ', registration);
+    })
+    .catch((error) => {
+        console.error('Service Worker не зарегистрирован: ', error);
+    });
+})
+}

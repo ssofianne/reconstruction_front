@@ -35,7 +35,9 @@ class WorksPage extends Component<{}, WorksPageState> {
         this.fetchAllWorks();
     }
 
+
     componentDidUpdate(prevProps: {}, prevState: WorksPageState) {
+        console.log(prevProps);
         // Проверяем, изменился ли searchWork
         if (prevState.searchWork !== this.state.searchWork || prevState.flagSearch !== this.state.flagSearch) {
             this.fetchAllWorks();

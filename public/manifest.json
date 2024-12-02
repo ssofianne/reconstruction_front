@@ -1,0 +1,32 @@
+{
+    "name": "Реконструкция исторических зданий",
+    "short_name": "Реконструкция исторических зданий",
+    "start_url": "/reconstruction_front/",
+    "display": "standalone",
+    "background_color": "#fdfdfd",
+    "theme_color": "#db4938",
+    "orientation": "portrait-primary",
+    "icons": [
+      {
+        "src": "/reconstruction_front/icons/android-chrome-192x192.png",
+        "type": "image/png", "sizes": "192x192"
+      },
+      {
+        "src": "/reconstruction_front/icons/android-chrome-512x512.png",
+        "type": "image/png", "sizes": "512x512"
+      }
+    ],
+    "screenshots": [
+        {
+            "src": "/reconstruction_front/1.jpg",
+            "sizes": "1195x800",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/reconstruction_front/1.jpg",
+            "sizes": "1195x800",
+            "type": "image/png"
+        }
+    ]
+}
