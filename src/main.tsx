@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
     navigator.serviceWorker
-      .register("reconstruction_front/serviceWorker.js")
+      .register("/serviceWorker.js")
       .then((registration) => {
         console.log('Service Worker зарегистрирован: ', registration);
     })
