@@ -8,7 +8,7 @@ const mockWorks: Work[] = [
 
 export const fetchWorks = async (): Promise<Work[]> => {
     try {
-        const response = await fetch('http://127.0.0.1:8000/works/');
+        const response = await fetch('/api/works/');
         console.log('Статус ответа:', response.status);
 
         if (!response.ok) {
@@ -25,7 +25,7 @@ export const fetchWorks = async (): Promise<Work[]> => {
 
 export const fetchWork = async (workId: number): Promise<Work | undefined> => {
     try {
-        const response = await fetch(`http://127.0.0.1:8000/works/${workId}/`);
+        const response = await fetch(`/api/works/${workId}/`);
         console.log('Статус ответа:', response.status);
         if (!response.ok) {
             console.error('Ошибка при получении данных:', response.status);

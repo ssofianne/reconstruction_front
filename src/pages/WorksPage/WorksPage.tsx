@@ -1,5 +1,4 @@
 import { Component, ChangeEvent, FormEvent } from 'react';
-import { connect } from 'react-redux';
 import Header from '../../components/Header/Header';
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
 import { Work } from '../../modules/Work';
@@ -86,8 +85,8 @@ class WorksPage extends Component<{}, WorksPageState> {
                     crumbs={[{ label: ROUTE_LABELS.WORKS, path: ROUTES.WORKS }]}
                 />
                 <div className="page_container">
-                    <div className="reserch">
-                        <form onSubmit={this.handleSearchClick}>
+                    <div >
+                        <form className="reserch" onSubmit={this.handleSearchClick}>
                             <p className="title_reserch">Общие работы</p>
                             <div className="inputField">
                                 <input

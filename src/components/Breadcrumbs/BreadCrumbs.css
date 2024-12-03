@@ -28,3 +28,15 @@
   .breadcrumbs li:last-child {
     color: var(--active_color);
   }
+
+  @media (max-width: 768px) {
+    .breadcrumbs {
+      flex-direction: column;
+      gap: 1px;
+      padding: 5px;
+    }
+
+    .breadcrumbs li {
+      font-size: 14px; 
+    }
+  }

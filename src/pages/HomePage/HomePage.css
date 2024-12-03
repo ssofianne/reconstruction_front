@@ -3,34 +3,48 @@
 @import "swiper/css";
 @import "swiper/css/pagination";
 
- .homepage{
-    /* justify-content: center; */
-    align-items: center;
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
- }
+.homepage{
+  /* justify-content: center; */
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
- .my-custom-font {
-    font-family: "Literata", Arial, sans-serif; 
-  }
+.my-custom-font {
+  font-family: "Literata", Arial, sans-serif; 
+  text-align: center;
+}
 
-  .wide-container {
-    /* max-width: 2000px !important; */
-    justify-content: center;
-    align-items: center;
+.wide-container {
+  /* max-width: 2000px !important; */
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: auto;
+  max-height: 500px; /* Ограничение по высоте */
+  object-fit: cover; /* Масштабирование изображения */
+}
+
+.swiper {
+  width: 80%; 
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .swiper {
+      width: 100%; 
+      margin: 0; 
   }
 
   .swiper-slide img {
-    width: 100%;
-    height: auto;
-    max-height: 500px; /* Ограничение по высоте */
-    object-fit: cover; /* Масштабирование изображения */
+      max-height: 300px; 
   }
+}
+  
 
-  .swiper {
-    width: 80%; /* Контролируйте ширину */
-    margin: 0 auto; /* Центрируйте слайдер */
-  }
 

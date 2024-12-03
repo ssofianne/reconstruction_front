@@ -2,7 +2,6 @@
     overflow: auto;
     border-radius: 0px 0px 50px 0px !important;
     background: linear-gradient(180deg, #3E80C2 0%, #72A9E0 100%);
-    /* padding: 10%; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -13,11 +12,9 @@
     padding: 0;
     height: 300px;
     width: 100%;
-    /* border-radius: 20px; */
     object-fit: cover;
 }
 .info{
-    /* margin-top: 10px; */
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -41,7 +38,6 @@
     border-radius: 50px;
     color: #5D86B6;
     background: white;
-    /* border: 1px solid #000000; */
     font-size: 16px;
     margin-bottom: 10px;
     text-decoration: none;
@@ -67,9 +63,29 @@
     text-overflow:ellipsis;
     margin-bottom:12px;
 }
-/* .cardImage {
-    object-fit: contain;
+
+/* Адаптивная верстка */
+@media (max-width: 768px) {
+    .card {
+        flex-direction: column;
+        width: 350px;
+    }
+    .title {
+        font-size: 18px; 
+    }
+
+    .price {
+        font-size: 20px;
+    }
+
+    .card-button {
+        padding: 10px 30px; 
+        font-size: 14px; 
+    }
+
+    .image {
+        height: 230px;
+    }
 }
-.cardButton {
-    width: 100%;
-} */
+
+
