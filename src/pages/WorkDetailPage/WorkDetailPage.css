@@ -1,5 +1,5 @@
 .page-container{
-    width: 1304px;
+    width: 1440;
     height: 100vh;
     margin: 0 68px 0 68px;
     margin-top: 45px;
@@ -67,16 +67,18 @@
     font-size: 20px;
     line-height: 27px;
     text-align: left;
+    width: 100%;
 }
 
 @media (max-width: 768px) {
     .page-container {
         margin: 0px; 
+        width: 100%;
     }
 
     .page-title {
         font-size: 22px; 
-        width: 400px;
+        width: 100%;
         text-align: center;
     }
 
@@ -101,14 +103,15 @@
     }
 
     .making-progect, .working-time {
-        width: 400px;
+        /* width: 400px; */
+        width: 100%;
         max-width: 100%; 
         font-size: 18px;
         align-items: center;
         padding: 5px;
     }
     .work-garant{
-        width: 400px; 
+        width: 100%;
         max-width: 100%; 
         font-size: 18px;
         margin-bottom: 15px;
@@ -116,7 +119,7 @@
 
     .work-price {
         gap: 200px; 
-        width: 400px;
+        width: 100%;
         text-align: center;
         align-items: center;
         padding: 5px;
@@ -125,7 +128,7 @@
     .subtitle {
         font-size: 18px;
         line-height: 22px;
-        width: 400px;
+        width: 100%;
         padding-top: 280px;
     }
 }

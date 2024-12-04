@@ -21,9 +21,6 @@ const worksSlice = createSlice({
     setFlagSearch: (state, action) => {
       state.flagSearch = action.payload;
     },
-    // setCount: (state, action) => {
-    //   state.count = action.payload;
-    // },
     resetSearch: (state) => {
       state.searchWork = '';
       state.inputValue = '';
@@ -36,7 +33,6 @@ export const {
   setSearchWork, 
   setInputValue, 
   setFlagSearch, 
-//   setCount, 
   resetSearch 
 } = worksSlice.actions;
 

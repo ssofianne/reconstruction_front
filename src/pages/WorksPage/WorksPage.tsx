@@ -1,4 +1,5 @@
 import { Component, ChangeEvent, FormEvent } from 'react';
+import { connect } from 'react-redux';
 import Header from '../../components/Header/Header';
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
 import { Work } from '../../modules/Work';
@@ -9,25 +10,45 @@ import { fetchWorks } from '../../modules/mocks';
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
 import './WorksPage.css';
 
-interface WorksPageState {
+// Импортируем экшены
+import { setSearchWork, setInputValue, setFlagSearch } from '../../redux/WorksSlice';
+
+// Подключаем Redux
+const mapStateToProps = (state: any) => ({
+    searchWork: state.works.searchWork,
+    inputValue: state.works.inputValue,
+    flagSearch: state.works.flagSearch,
+});
+  
+  const mapDispatchToProps = {
+    setSearchWork,
+    setInputValue,
+    setFlagSearch,
+};
+
+// Типы пропсов, которые получаем от Redux
+interface WorksPageProps {
     searchWork: string;
     inputValue: string;
+    flagSearch: boolean;
+    setSearchWork: (searchWork: string) => void;
+    setInputValue: (inputValue: string) => void;
+    setFlagSearch: (flagSearch: boolean) => void;
+}
+
+interface WorksPageState {
     loadingWorks: boolean;
     works: Work[];
     count: number;
-    flagSearch: boolean;
 }
 
-class WorksPage extends Component<{}, WorksPageState> {
-    constructor(props: {}) {
+class WorksPage extends Component<WorksPageProps, WorksPageState> {
+    constructor(props: WorksPageProps) {
         super(props);
         this.state = {
-            searchWork: '',
-            inputValue: '',
-            loadingWorks: false,
-            works: [],
-            count: 0,
-            flagSearch: false,
+          works: [],
+          count: 0,
+          loadingWorks: false,
         };
     }
 
@@ -36,10 +57,10 @@ class WorksPage extends Component<{}, WorksPageState> {
     }
 
 
-    componentDidUpdate(prevProps: {}, prevState: WorksPageState) {
+    componentDidUpdate(prevProps: WorksPageProps) {
         console.log(prevProps);
         // Проверяем, изменился ли searchWork
-        if (prevState.searchWork !== this.state.searchWork || prevState.flagSearch !== this.state.flagSearch) {
+        if (prevProps.searchWork !== this.props.searchWork || prevProps.flagSearch !== this.props.flagSearch) {
             this.fetchAllWorks();
         }
     }
@@ -48,8 +69,8 @@ class WorksPage extends Component<{}, WorksPageState> {
         this.setState({ loadingWorks: true });
         try {
             let allWorks = await fetchWorks(); // Загружаем все работы
-            if (this.state.searchWork) {
-                const lowerCaseWork = this.state.searchWork.toLowerCase();
+            if (this.props.searchWork) {
+                const lowerCaseWork = this.props.searchWork.toLowerCase();
                 allWorks = allWorks.filter(work =>
                     work.title.toLowerCase().includes(lowerCaseWork)
                 );
@@ -64,19 +85,20 @@ class WorksPage extends Component<{}, WorksPageState> {
     };
 
     handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        this.setState({ inputValue: event.target.value });
+        // Обновляем значение ввода в Redux
+        this.props.setInputValue(event.target.value);
     };
 
     handleSearchClick = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        this.setState({
-            searchWork: this.state.inputValue,
-            flagSearch: true,
-        });
+        // Обновляем searchWork и флаг поиска в Redux
+        this.props.setSearchWork(this.props.inputValue);
+        this.props.setFlagSearch(true);
     };
 
     render() {
-        const { inputValue, works, loadingWorks, flagSearch, count } = this.state;
+        const { works, loadingWorks, count } = this.state;
+        const { inputValue, flagSearch} = this.props;
 
         return (
             <div>
@@ -130,4 +152,4 @@ class WorksPage extends Component<{}, WorksPageState> {
     }
 }
 
-export default WorksPage;
+export default connect(mapStateToProps, mapDispatchToProps)(WorksPage);
