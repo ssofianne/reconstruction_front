@@ -20,7 +20,7 @@ const mapStateToProps = (state: any) => ({
     flagSearch: state.works.flagSearch,
 });
   
-  const mapDispatchToProps = {
+const mapDispatchToProps = {
     setSearchWork,
     setInputValue,
     setFlagSearch,
