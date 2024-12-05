@@ -7,6 +7,7 @@ export default defineConfig({
   base: "/reconstruction_front", // Замените RepoName на имя вашего репозитория
   plugins: [react()],
   server: {
+    host:"localhost",
     port: 3000,
     proxy: {
       "/api": {
