@@ -1,14 +1,22 @@
 import { Link } from 'react-router-dom'; 
 import './Header.css'
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { logout } from '../../redux/AuthSlice';
 
+interface User {
+    username: string | null; 
+}
 
 const Header = () => {
-
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const toggleMobileMenu = () => {setIsMobileMenuOpen(!isMobileMenuOpen);};
+    const user: User = useSelector((state: RootState) => state.auth.user); // Доступ к пользователю из Redux
+    const dispatch = useDispatch();
 
-    const toggleMobileMenu = () => {
-      setIsMobileMenuOpen(!isMobileMenuOpen);
+    const handleLogout = () => {
+        dispatch(logout()); 
     };
 
     return (
@@ -32,6 +40,16 @@ const Header = () => {
                     </div>
                 </div>
                 <ul className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}>
+                    {user.username ? (
+                        <>
+                            <li className='username'>{user.username}</li>
+                            <li><Link onClick={handleLogout} to={''}>Выйти</Link></li>
+                        </>
+                    ) : (
+                        <li>
+                        <Link to="/login">Войти</Link>
+                        </li>
+                    )}
                     <li><Link to="/works">Виды работ</Link></li>
                 </ul>
             </div>

@@ -1,17 +1,20 @@
+import React from 'react';
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import {BrowserRouter} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import { Provider } from 'react-redux';
 // import storage from '/src/redux/store';
-import storage from './redux/store.ts';
+import store from './redux/store';
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter basename="/reconstruction_front">
-    <Provider store={storage}>
-      <App />
-    </Provider>
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>
   </BrowserRouter>
 )
 

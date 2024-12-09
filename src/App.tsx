@@ -1,8 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage/HomePage'
+import AuthPage from './pages/AuthPage/AuthPage'
 import WorksPage from './pages/WorksPage/WorksPage'
 import {WorkDetailPage} from './pages/WorkDetailPage/WorkDetailPage'
 import { useEffect } from 'react';
+import { ROUTES } from './components/Routes';
 
 // const { invoke } = (window as any).__TAURI__.tauri;
 
@@ -28,6 +30,7 @@ function App(){
 
     <Routes>
       <Route path= "/" element={<HomePage/>}/>
+      <Route path={ROUTES.LOGIN} element={<AuthPage />} />
       <Route path= "/works" element={<WorksPage/>}/>
       <Route path={`/work/:workId`} element={<WorkDetailPage />} />
     </Routes>
