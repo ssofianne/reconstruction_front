@@ -46,9 +46,14 @@ const Header = () => {
                             <li><Link onClick={handleLogout} to={''}>Выйти</Link></li>
                         </>
                     ) : (
-                        <li>
-                        <Link to="/login">Войти</Link>
-                        </li>
+                        <>
+                            <li>
+                            <Link to="/login">Войти</Link>
+                            </li>
+                            <li>
+                            <Link to="/register">Регистрация</Link>
+                            </li>
+                        </>
                     )}
                     <li><Link to="/works">Виды работ</Link></li>
                 </ul>

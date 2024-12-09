@@ -5,6 +5,7 @@ import WorksPage from './pages/WorksPage/WorksPage'
 import {WorkDetailPage} from './pages/WorkDetailPage/WorkDetailPage'
 import { useEffect } from 'react';
 import { ROUTES } from './components/Routes';
+import RegisterPage from './pages/RegisterPage/RegisterPage'
 
 // const { invoke } = (window as any).__TAURI__.tauri;
 
@@ -31,6 +32,7 @@ function App(){
     <Routes>
       <Route path= "/" element={<HomePage/>}/>
       <Route path={ROUTES.LOGIN} element={<AuthPage />} />
+      <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
       <Route path= "/works" element={<WorksPage/>}/>
       <Route path={`/work/:workId`} element={<WorkDetailPage />} />
     </Routes>

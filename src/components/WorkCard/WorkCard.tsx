@@ -21,11 +21,11 @@ const WorkCard: React.FC<WorkCardProps>   = ({ work }) => {
         <Link to={`/work/${work.pk}/`} className="card-button">
           Подробнее
         </Link>
-        {/* <form method="post" action={`/work/${work.pk}/add_work/`}>
+        <form method="post" action={`/work/${work.pk}/add_work/`}>
           <button className="card-button" type="submit">
             Добавить
           </button>
-        </form> */}
+        </form>
       </div>
     </div>
   );

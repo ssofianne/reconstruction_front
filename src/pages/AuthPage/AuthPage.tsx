@@ -65,7 +65,7 @@ const LoginPage: React.FC = () => {
                     />
                 </Form.Group>
                 <Button className="button" variant="primary" onClick={handleLogin} disabled={loading}>
-                    {loading ? 'Logging in...' : 'Войти'}
+                    {loading ? 'Войти...' : 'Войти'}
                 </Button>
             </Form>
         </div>
