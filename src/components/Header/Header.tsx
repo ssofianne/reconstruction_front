@@ -29,7 +29,7 @@ const Header = () => {
         } catch (error) {
             console.error('Ошибка при выходе:', error);
         }
-        // dispatch(logout()); // Удаление пользователя из Redux
+        // dispatch(logout()); 
     };
 
     return (
@@ -59,6 +59,7 @@ const Header = () => {
                                 <Link  to={ROUTES.USER_PROFILE}>{user.username}</Link>
                             </li>
                             <li><Link onClick={handleLogout} to={''}>Выйти</Link></li>
+                            <li><Link to={ROUTES.RECONSTRUCTIONS}>Реконструкции</Link></li>
                         </>
                     ) : (
                         <>

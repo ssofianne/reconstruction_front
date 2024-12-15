@@ -2,15 +2,17 @@ import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Header from '../../components/Header/Header';
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
-import { Work } from '../../modules/Work';
+// import { work } from '../../modules/Work';
 import WorkCard from '../../components/WorkCard/WorkCard';
 import '../../components/InputField/InputField.css';
 import { Spinner } from 'react-bootstrap';
-import { fetchWorks } from '../../modules/mocks';
+import { mockWorks } from '../../modules/mocks';
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
+// import { RootState } from '../../redux/store';
+import { api } from '../../api'; 
+import { Work } from '../../api/Api';
 import './WorksPage.css';
 
-// Импортируем экшены
 import { setSearchWork, setInputValue, setFlagSearch } from '../../redux/WorksSlice';
 
 const WorksPage: React.FC = () => {
@@ -21,27 +23,39 @@ const WorksPage: React.FC = () => {
 
     const [works, setWorks] = useState<Work[]>([]);
     const [loadingWorks, setLoadingWorks] = useState(false);
+
     const [count, setCount] = useState(0);
+    const [draftReconstructionID, setDraftReconstructionID] = useState(0);
 
     const fetchAllWorks = async () => {
         setLoadingWorks(true);
         try {
-            let allWorks = await fetchWorks();
-            if (searchWork) {
-                const lowerCaseWork = searchWork.toLowerCase();
-                allWorks = allWorks.filter(work =>
-                    work.title.toLowerCase().includes(lowerCaseWork)
-                );
+            const response = await api.works.worksList({
+                work_title: searchWork,
+            });
+        
+            // Данные находятся внутри response.data
+            const data = response.data;
+            const allWorks = data.works as Work[]; // Извлекаем works из response.data
+            console.log('Полученные данные из API:', allWorks);
+        
+            setWorks(allWorks); // Устанавливаем массив works
+
+            if (data && data.draft_reconstruction_id && data.count_of_works) {
+                const NumberOfWorks = data.count_of_works as number;
+                const draftReconstructionIDData = data.draft_reconstruction_id as number;
+
+                setCount(NumberOfWorks);
+                setDraftReconstructionID(draftReconstructionIDData);
             }
-            console.log('Полученные данные:', allWorks);
-            setWorks(allWorks);
         } catch (error) {
-            console.error('Ошибка при загрузке работ:', error);
+          console.error('Ошибка при загрузке данных из API:', error);
+          setWorks(mockWorks); // Используем моки в случае ошибки
         } finally {
-            setLoadingWorks(false);
+          setLoadingWorks(false);
         }
     };
-
+            
     useEffect(() => {
         fetchAllWorks();
     }, [searchWork, flagSearch]);

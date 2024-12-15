@@ -1,0 +1,36 @@
+.title {
+    color: #000;
+    font-size: 26px;
+    margin-left: 20px;
+}
+
+.names{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.table-container {
+    border: 1px solid #000; /* Чёрная обводка вокруг всей таблицы */
+    border-radius: 8px; /* Скруглённые углы */
+    padding: 16px; /* Внутренний отступ */
+    margin: 16px;
+    background-color: white; /* Фоновый цвет */
+}
+
+.table-container .row {
+    border-bottom: 1px solid #ddd; /* Линии между строками */
+    padding: 8px 0; /* Отступы строк */
+}
+
+.table-container .row:last-child {
+    border-bottom: none; /* Убираем нижнюю границу у последней строки */
+}
+
+.table-container .col {
+    border-right: 1px solid #ddd; /* Линии между колонками */
+    padding: 8px; /* Внутренний отступ */
+}
+
+.table-container .col:last-child {
+    border-right: none; /* Убираем правую границу у последней колонки */
+}

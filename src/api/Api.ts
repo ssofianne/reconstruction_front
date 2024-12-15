@@ -47,6 +47,43 @@ export interface User {
   is_superuser?: boolean;
 }
 
+export interface Reconstruction {
+  /** ID */
+  pk?: number;
+  /** Status */
+  status?: "draft" | "deleted" | "created" | "completed" | "rejected";
+  /**
+   * Creation date
+   * @format date-time
+   */
+  creation_date?: string;
+  /**
+   * Apply date
+   * @format date-time
+   */
+  apply_date?: string | null;
+  /**
+   * End date
+   * @format date-time
+   */
+  end_date?: string | null;
+  /**
+   * Creator
+   * @format email
+   * @minLength 1
+   */
+  creator?: string;
+  /** Moderator */
+  moderator?: string;
+  /**
+   * Place
+   * @maxLength 100
+   */
+  place?: string | null;
+  /** Fundraising */
+  fundraising?: number | null;
+}
+
 export interface Work {
   /** ID */
   pk?: number;
@@ -347,7 +384,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         {
-          pk: number;
+          pk: any;
           email: string;
           password: string;
         },
@@ -393,23 +430,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     reconstructionDraftCreate: (
       data: {
         /** ID работы */
-        work_id?: number;
+        work_id: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** ID работы */
-          work_id?: number;
-        },
-        any
-      >({
+      this.request<void, void>({
         path: `/reconstruction/draft/`,
         method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
         ...params,
       }),
   };
@@ -419,7 +449,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags reconstructions
      * @name ReconstructionsList
-     * @summary Список заявок на реконструкцию
+     * @summary Список реконструкций
      * @request GET:/reconstructions/
      * @secure
      */
@@ -430,11 +460,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<
+        {
+          reconstructions?: {
+            pk?: number;
+            status?: string;
+            creation_date?: string;
+            apply_date?: string;
+            end_date?: string;
+            creator?: string;
+            moderator?: number;
+            place?: string;
+            fundraising?: string;
+          }[];
+        },
+        any
+      >({
         path: `/reconstructions/`,
         method: "GET",
         query: query,
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -443,15 +489,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags reconstructions
      * @name ReconstructionsRead
-     * @summary Одна заявка на реконструкцию
+     * @summary Одна реконструкция
      * @request GET:/reconstructions/{id}/
      * @secure
      */
     reconstructionsRead: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<
+        {
+          reconstruction?: {
+            pk?: number;
+            status?: string;
+            creation_date?: string;
+            apply_date?: string;
+            end_date?: string;
+            creator?: string;
+            moderator?: number;
+            place?: string;
+            fundraising?: string;
+          };
+          works?: {
+            pk?: number;
+            title?: string;
+            description?: string;
+            price?: number;
+            imageurl?: string;
+          }[];
+        },
+        any
+      >({
         path: `/reconstructions/${id}/`,
         method: "GET",
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -464,19 +533,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/reconstructions/{id}/
      * @secure
      */
-    reconstructionsUpdate: (
-      id: string,
-      query?: {
-        /** Место */
-        place?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
+    reconstructionsUpdate: (id: string, data: Reconstruction, params: RequestParams = {}) =>
+      this.request<Reconstruction, any>({
         path: `/reconstructions/${id}/`,
         method: "PUT",
-        query: query,
+        body: data,
         secure: true,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -507,7 +571,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reconstructionsCreateUpdate: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<void, void>({
         path: `/reconstructions/${id}/create/`,
         method: "PUT",
         secure: true,
@@ -530,12 +594,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          status: "completed" | "rejected";
-        },
-        any
-      >({
+      this.request<Reconstruction, void>({
         path: `/reconstructions/${id}/finish/`,
         method: "PUT",
         body: data,
@@ -605,11 +664,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<
+        {
+          works?: {
+            pk?: number;
+            title?: string;
+            description?: string;
+            price?: number;
+            imageurl?: string;
+          }[];
+          draft_reconstruction_id?: number;
+          count_of_works?: number;
+        },
+        any
+      >({
         path: `/works/`,
         method: "GET",
         query: query,
         secure: true,
+        format: "json",
         ...params,
       }),
 

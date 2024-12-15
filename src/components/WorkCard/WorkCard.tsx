@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Work } from '../../modules/Work';
+// import { work } from '../../modules/Work';
 import './WorkCard.css';
 
 type WorkCardProps = {
-    work: Work; 
+  work: {
+    pk: number; // Обязательно должно быть число
+    title: string;
+    description: string;
+    price: number;
+    imageurl: string;
+  }; 
 };
 
 
