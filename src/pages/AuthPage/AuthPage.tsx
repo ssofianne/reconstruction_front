@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => {
         setError(null);
         // Отправляем данные на сервер для авторизации
         const response = await api.login.loginCreate({ email, password });
-
+        
         const id = response.data.pk;
   
         // Сохраняем id в Redux

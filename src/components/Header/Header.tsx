@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { logout } from '../../redux/AuthSlice';
+import { ROUTES } from '../Routes';
+import { api } from '../../api';
 
 interface User {
     username: string | null; 
@@ -15,8 +17,19 @@ const Header = () => {
     const user: User = useSelector((state: RootState) => state.auth.user); // Доступ к пользователю из Redux
     const dispatch = useDispatch();
 
-    const handleLogout = () => {
-        dispatch(logout()); 
+    const handleLogout = async () => {
+        try {
+            const response = await api.logout.logoutCreate(); // Вызов метода API
+    
+            if (response) {
+                dispatch(logout()); // Удаление пользователя из Redux
+            } else {
+                console.error('Ошибка выхода: пустой ответ от сервера');
+            }
+        } catch (error) {
+            console.error('Ошибка при выходе:', error);
+        }
+        // dispatch(logout()); // Удаление пользователя из Redux
     };
 
     return (
@@ -42,7 +55,9 @@ const Header = () => {
                 <ul className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}>
                     {user.username ? (
                         <>
-                            <li className='username'>{user.username}</li>
+                            <li className='username'>
+                                <Link  to={ROUTES.USER_PROFILE}>{user.username}</Link>
+                            </li>
                             <li><Link onClick={handleLogout} to={''}>Выйти</Link></li>
                         </>
                     ) : (

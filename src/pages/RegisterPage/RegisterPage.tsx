@@ -10,6 +10,8 @@ import './RegisterPage.css';
 
 const RegisterPage: React.FC = () => {
     const [email, setUsername] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -19,71 +21,92 @@ const RegisterPage: React.FC = () => {
     const handleRegister = async (e: FormEvent) => {
         e.preventDefault();
         if (password !== confirmPassword) {
-        setError('Пароли не совпадают');
-        return;
+            setError('Пароли не совпадают');
+            return;
         }
 
         try {
-        setLoading(true);
-        setError(null);
-        const userData = { email, password };
-        await api.api.apiUserCreate(userData);
-        alert('Вы успешно зарегистрированы!');
-        navigate('/login');
+            setLoading(true);
+            setError(null);
+            const userData = { 
+                email, 
+                password,
+                first_name: firstName,
+                last_name: lastName 
+            };
+            await api.api.apiUserCreate(userData);
+            alert('Вы успешно зарегистрированы!');
+            navigate('/login');
         } catch (error: any) {
             setError('Ошибка регистрации.');
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     };
 
     return (
-        <div className='background'>   
-        {/* <BreadCrumbs
-                crumbs={[{ label: ROUTE_LABELS.REGISTER, path: ROUTES.REGISTER }]}
-        /> */}
-        {/* <Header /> */}
-        <Container className="d-flex justify-content-center align-items-center min-vh-100">
-            <div className="form-container w-50 p-5 border rounded shadow">
-            <h2>Регистрация</h2>
-            {error && <Alert variant="danger">{error}</Alert>}
-            <Form onSubmit={handleRegister}> {/* Use onSubmit for better form handling */}
-                <Form.Group controlId="formBasicUsername" className='form'>
-                <Form.Control
-                    type="text"
-                    placeholder="Введите почту"
-                    value={email}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-                </Form.Group>
+        <div className='background'>
+            <Container className="d-flex justify-content-center align-items-center min-vh-100">
+                <div className="form-container w-50 p-5 border rounded shadow">
+                    <h2>Регистрация</h2>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <Form onSubmit={handleRegister}>
+                        <Form.Group controlId="formBasicEmail" className='form'>
+                            <Form.Control
+                                type="email"
+                                placeholder="Введите почту"
+                                value={email}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
 
-                <Form.Group controlId="formBasicPassword" className='form'>
-                <Form.Control
-                    type="password"
-                    placeholder="Введите пароль"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                </Form.Group>
+                         <Form.Group controlId="formBasicFirstName" className='form'>
+                            <Form.Control
+                                type="text"
+                                placeholder="Введите ваше имя"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
 
-                <Form.Group controlId="formBasicConfirmPassword" className='form'>
-                <Form.Control
-                    type="password"
-                    placeholder="Подтвердите пароль"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                />
-                </Form.Group>
+                        <Form.Group controlId="formBasicLastName" className='form'>
+                            <Form.Control
+                                type="text"
+                                placeholder="Введите вашу фамилию"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
 
-                <Button className="button" variant="primary" type="submit" disabled={loading}>
-                {loading ? 'Регистрация...' : 'Зарегистрироваться'}
-                </Button>
-            </Form>
-            </div>
-        </Container>
+                        <Form.Group controlId="formBasicPassword" className='form'>
+                            <Form.Control
+                                type="password"
+                                placeholder="Введите пароль"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="formBasicConfirmPassword" className='form'>
+                            <Form.Control
+                                type="password"
+                                placeholder="Подтвердите пароль"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+
+                        <Button className="button" variant="primary" type="submit" disabled={loading}>
+                            {loading ? 'Регистрация...' : 'Зарегистрироваться'}
+                        </Button>
+                    </Form>
+                </div>
+            </Container>
         </div>
     );
 };

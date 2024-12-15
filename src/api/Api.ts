@@ -10,6 +10,8 @@
  */
 
 export interface User {
+  /** ID */
+  pk?: number;
   /**
    * Email адрес
    * @format email
@@ -23,6 +25,16 @@ export interface User {
    * @maxLength 255
    */
   password: string;
+  /**
+   * First name
+   * @maxLength 100
+   */
+  first_name?: string | null;
+  /**
+   * Last name
+   * @maxLength 100
+   */
+  last_name?: string | null;
   /**
    * Is staff
    * @default false
@@ -246,10 +258,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Класс, описывающий методы работы с пользователями Осуществляет связь с таблицей пользователей в базе данных
+     * @description Метод для получения данных о пользователе по его ID.
      *
      * @tags api
      * @name ApiUserRead
+     * @summary Получение данных пользователя
      * @request GET:/api/user/{id}/
      * @secure
      */
@@ -334,7 +347,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         {
-          pk: any;
+          pk: number;
           email: string;
           password: string;
         },
