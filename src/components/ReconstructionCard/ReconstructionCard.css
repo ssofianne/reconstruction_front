@@ -27,10 +27,12 @@
     border: none;
     font-size: 20px;
     border-radius: 20px;
-    padding-left: 10px;
+    padding-left: 10px !important;
     width: 100px;
     color: #3E80C2;
     outline:none;
+    margin-left: 10px;
+    margin-right: 5px;
 }
 
 .title-works{
@@ -54,6 +56,8 @@ input:focus::placeholder {
     font-size: 24px;
     color: white;
     height: 60px;
+    margin-left: 15px !important;
+    font-weight: bold;
 }
 
 .specifications{
@@ -62,6 +66,7 @@ input:focus::placeholder {
     font-size: 20px;
     gap: 12px;
     color: white;
+    margin-left: 15px !important;
 }
 
 .card_and_buttons{
@@ -82,4 +87,51 @@ input:focus::placeholder {
     border-radius: 20px;
     border: none;
     cursor: pointer;
+}
+
+.edit-btn{
+    margin-left: 5px;
+}
+
+.title_and_delete{
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    gap: 290px;
+    padding-bottom: 10px;
+    height: auto;
+}
+
+.delete-btn{
+    font-size: 30px;
+    margin: 0px;
+    background-color: transparent;
+    border: none;
+    margin-right: 10px;
+    color: white;
+    transition: color 0.3s ease;
+}
+.delete-btn:hover {
+    color: red; 
+}
+
+.actions{
+    margin-top: 30px;
+    margin-left: 10px;
+}
+.edit-btn{
+    background-color: #c8dcf1;
+    border-radius: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    border: none;
+    transition: color 0.3s ease;
+    transition: background-color 0.3s ease;
+}
+.edit-btn:hover{
+    background-color: #3E80C2;
+    color: white;
 }

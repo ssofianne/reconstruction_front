@@ -471,7 +471,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             creator?: string;
             moderator?: number;
             place?: string;
-            fundraising?: string;
+            fundraising?: number;
           }[];
         },
         any
@@ -505,7 +505,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             creator?: string;
             moderator?: number;
             place?: string;
-            fundraising?: string;
+            fundraising?: number;
           };
           works?: {
             pk?: number;

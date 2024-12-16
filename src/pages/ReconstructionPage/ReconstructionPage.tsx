@@ -18,6 +18,7 @@ const ReconstructionPage: FC = () => {
     const [reconstruction, setReconstruction] = useState<Reconstruction>();
     const [works, setWorks] = useState<Work[]>();
     const [place, setPlace] = useState("");
+    const [fundraising, setFundraising] = useState<number>(0)
   
     const navigate = useNavigate();
     const { pk } = useParams();
@@ -45,6 +46,7 @@ const ReconstructionPage: FC = () => {
                     navigate(ROUTES.RECONSTRUCTIONS);
                 }
                 setPlace(reconstructionData.place ?? '');
+                setFundraising(reconstructionData.fundraising ?? 0); 
             } else {
                 setIsError(true);
             }
@@ -83,35 +85,46 @@ const ReconstructionPage: FC = () => {
                             ]}
                         />
             
-                        <div className="top-container">
-                            <div className="title"></div>
-            
-                            <div className="horizontal-container">
-                                {/* <Button variant="primary" onClick={handleSubmitButtonClick}>Сформировать заявку</Button>
-                                <Button variant="danger" onClick={handleDeleteButtonClick}>Удалить заявку</Button> */}
+                        <div className="container-up">
+                            <div className="title-works">Реконструкционные работы</div>
+                            <div>
+                                <input type="text" className="pplace" placeholder="Введите место" defaultValue={place}/>
+                            </div>
+                            <div className="title-fundraising">Результат сбора средств: 
+                                <p className="result-fundraising">{fundraising} ₽</p>
+                            </div>
+                            {/* <div className="horizontal-container">
+                                <Button variant="primary" onClick={handleSubmitButtonClick}>Сформировать заявку</Button>
+                                <Button variant="danger" onClick={handleDeleteButtonClick}>Удалить заявку</Button>
+                            </div> */}
+                        </div>
+                        <div className='cards-buttons'>           
+                            {works?.length ? (
+                                <Row className="cardd">
+                                    {works.map((item, index) => (
+                                        <Col key={index} xs={12}>
+                                            <ReconstructionCard
+                                                key={item.pk}
+                                                imageurl={item.imageurl || ''}
+                                                title={item.title}
+                                                price={item.price}
+                                                space={item.space}
+                                                imageClickHandler={() => handleCardClick(item.pk)}
+                                                HandleEdit={() => handleArrowClick(item.pk)}
+                                                HandleDelete={() => handleMinusClick(item.pk)}
+                                            />
+                                        </Col>
+                                    ))}
+                                </Row>
+                            ) : (
+                                <div>Вы еще не добавили ни одной работы</div>
+                            )}
+                            <div className='buttons-rec'>
+                                <Button className='create-btn' >Изменить место работ</Button>
+                                <Button className='create-btn' >Сформировать заявку</Button>
+                                <Button className='delete-btnn' >Удалить заявку</Button>
                             </div>
                         </div>
-
-                        {works?.length ? (
-                            <Row className="cardd">
-                                {works.map((item, index) => (
-                                    <Col key={index} xs={12}>
-                                        <ReconstructionCard
-                                            key={item.pk}
-                                            imageurl={item.imageurl || ''}
-                                            title={item.title}
-                                            price={item.price}
-                                            space={0}
-                                            imageClickHandler={() => handleCardClick(item.pk)}
-                                            HandleEdit={() => handleArrowClick(item.pk)}
-                                            HandleDelete={() => handleMinusClick(item.pk)}
-                                        />
-                                    </Col>
-                                ))}
-                            </Row>
-                        ) : (
-                            <div>Вы еще не добавили ни одной работы</div>
-                        )}
                     </>
                 ) : (
                     <div>Нет доступа к данной заявке</div>

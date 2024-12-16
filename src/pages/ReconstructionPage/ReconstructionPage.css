@@ -1,10 +1,12 @@
 .cardd{
     height: auto;
     /* display: flex; */
-    margin-left: 45px;
-    margin-right: 25px;
-    margin-top: 30px;
+    margin-left: 45px !important;
+    /* margin-right: 25px; */
+    margin-top: 30px !important;
     background: white;
+    margin-right: 0px !important;
+    padding-right: 0px !important;
     /* justify-content: flex-start;
     flex-wrap: wrap; */
 }
@@ -12,4 +14,107 @@
 .ccontainer{
     display: flex;
     flex-direction: column;
+}
+
+.container-up{
+    display: flex;
+    align-items: center;
+    margin-left: 40px;
+}
+
+.title-works{
+    font-size: 35px;
+    width: auto;
+    margin-left: 20px !important;
+}
+
+.pplace{
+    outline:none;
+    border-radius: 20;
+    font-size: 22px;
+    background: #72A9E0;
+    color: white;
+    width: auto;
+    padding-right: 10px;
+    height: 70px;
+    align-items: center;
+    display: flex;
+    border-radius: 20px;
+    padding-left: 10px;
+    text-align: center;
+    margin-left: 50px;
+    margin-right: 10px;
+    border: none;
+}
+
+.place::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+input:focus::placeholder {
+    color: transparent;
+}
+
+.title-fundraising{
+    font-size: 22px;
+    width: auto;
+    border-radius: 20px;
+    background: #72A9E0;
+    color: white;
+    font-size: 22px;
+    height: 70px;
+    align-items: center;
+    display: flex;
+    padding-left: 10px;
+    width: 540px;
+}
+
+.result-fundraising{
+    height: 70px;
+    width: auto;
+    padding-left: 140px;
+    align-items: center;
+    display: flex;
+    font-weight: bold;
+    font-size: 27px;
+}
+
+.cards-buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 0px !important;
+}
+
+.buttons-rec{
+    width: auto;
+    margin-top: 30px;
+    margin-right: 100px;
+}
+
+.create-btn{
+    width: 240px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 10px;
+    border-radius: 20px !important;
+    background-color: #72A9E0 !important;
+    border: none !important;
+    transition: background-color 0.3s ease !important;
+}
+.create-btn:hover{
+    background-color: #285b8f !important;
+}
+.delete-btnn{
+    width: 240px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 10px;
+    border-radius: 20px !important;
+    background-color: #72A9E0 !important;
+    border: none !important;
+    transition: background-color 0.3s ease !important;
+}
+.delete-btnn:hover{
+    background-color: red !important;
 }

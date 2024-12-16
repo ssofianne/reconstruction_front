@@ -4,7 +4,7 @@ import './ReconstructionCard.css';
 interface ReconstructionCardProps {
     title: string;
     imageurl: string;
-    price: number;
+    price: number | undefined;
     space: number;
     imageClickHandler: () => void;
     HandleEdit: () => void;
@@ -27,7 +27,12 @@ const ReconstructionCard: FC<ReconstructionCardProps> = ({
           <img src={imageurl} alt={title} className="work-img" onClick={imageClickHandler}/>
         </div>
         <div className="info-work">
-          <div className="title-card">{title}</div>
+          <div className='title_and_delete'>
+            <div className="title-card">{title}</div>
+            <button className="delete-btn" onClick={HandleDelete}>
+              ✕
+            </button>
+          </div>
           <div className="specifications">
             <p>Цена: {price} ₽/м²</p>
             <div>
@@ -44,11 +49,9 @@ const ReconstructionCard: FC<ReconstructionCardProps> = ({
           </div>
           <div className="actions">
             <button className="edit-btn" onClick={HandleEdit}>
-              Изменить
+              Изменить объем
             </button>
-            <button className="delete-btn" onClick={HandleDelete}>
-              Удалить
-            </button>
+            
           </div>
         </div>
       {/* </div> */}
