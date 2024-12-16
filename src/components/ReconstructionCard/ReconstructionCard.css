@@ -1,0 +1,85 @@
+.card-container {
+    width: 1120px;
+    height: 275px;
+    background: linear-gradient(180deg, #3E80C2 0%, #72A9E0 100%);
+    margin-bottom: 20px;
+    border-bottom-right-radius: 50px;
+    display: flex;
+    margin-right: 20px;
+}
+
+.cardd {
+    height: auto;
+    margin-left: 15px; /* Уменьшите отступы */
+    margin-right: 15px; /* Уменьшите отступы */
+    margin-top: 15px; /* Уменьшите отступы */
+    background: white;
+}
+
+.work-img {
+    width: 428px;
+    height: 275px;
+    display: block; /* Устанавливает изображение в блок */
+    object-fit: cover; /* Устанавливает режим обрезки изображения */
+}
+
+.value-input{
+    border: none;
+    font-size: 20px;
+    border-radius: 20px;
+    padding-left: 10px;
+    width: 100px;
+    color: #3E80C2;
+    outline:none;
+}
+
+.title-works{
+    font-size: 35px;
+    width: auto;
+}
+
+input:focus::placeholder {
+    color: transparent;
+}
+
+
+.info_work{
+    margin-left: 24px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: normal;
+}
+
+.title-card{
+    font-size: 24px;
+    color: white;
+    height: 60px;
+}
+
+.specifications{
+    display: grid;
+    margin-top: 12px;
+    font-size: 20px;
+    gap: 12px;
+    color: white;
+}
+
+.card_and_buttons{
+    display: flex;
+    /* gap: 280px; */
+}
+
+.delete_application_button{
+    margin-top: 27px;
+    background: #3E80C2;
+    height: 50px;
+    width: 200px;
+    font-size: 20px;
+    justify-content: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}

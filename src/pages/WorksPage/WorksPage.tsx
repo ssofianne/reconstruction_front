@@ -13,7 +13,9 @@ import { api } from '../../api';
 import { Work } from '../../api/Api';
 import './WorksPage.css';
 
+
 import { setSearchWork, setInputValue, setFlagSearch } from '../../redux/WorksSlice';
+import { useNavigate } from 'react-router-dom';
 
 const WorksPage: React.FC = () => {
     const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const WorksPage: React.FC = () => {
 
     const [count, setCount] = useState(0);
     const [draftReconstructionID, setDraftReconstructionID] = useState(0);
+    const navigate = useNavigate();
 
     const fetchAllWorks = async () => {
         setLoadingWorks(true);
@@ -70,6 +73,12 @@ const WorksPage: React.FC = () => {
         dispatch(setFlagSearch(true));
     };
 
+    const handleReconstructionClick = () => {
+        if (draftReconstructionID) {
+            navigate(`/reconstructions/${draftReconstructionID}/`);
+        }
+    };
+
     return (
         <div>
             <Header />
@@ -93,6 +102,7 @@ const WorksPage: React.FC = () => {
                                     <img
                                         src="http://127.0.0.1:9000/fond-media/request.png"
                                         className="application"
+                                        onClick={handleReconstructionClick}
                                     />
                                     <div className="sum-request">{count}</div>
                                 </div>

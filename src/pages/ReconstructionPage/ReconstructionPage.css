@@ -1,0 +1,15 @@
+.cardd{
+    height: auto;
+    /* display: flex; */
+    margin-left: 45px;
+    margin-right: 25px;
+    margin-top: 30px;
+    background: white;
+    /* justify-content: flex-start;
+    flex-wrap: wrap; */
+}
+
+.ccontainer{
+    display: flex;
+    flex-direction: column;
+}

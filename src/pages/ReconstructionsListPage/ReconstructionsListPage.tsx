@@ -1,9 +1,7 @@
 import './ReconstructionsListPage.css';
 import { FC, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
-// import { useAppDispatch } from '../../redux/store';
 import Header from '../../components/Header/Header';
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
 import { api } from '../../api';
@@ -30,10 +28,10 @@ const ReconstructionsListPage: FC = () => {
             });
         
             const data = response.data;
-            const allReconstructions = data.reconstructions as Reconstruction[]; // Извлекаем works из response.data
+            const allReconstructions = data.reconstructions as Reconstruction[]; 
             console.log('Полученные данные из API:', allReconstructions);
         
-            setReconstructions(allReconstructions); // Устанавливаем массив works
+            setReconstructions(allReconstructions);
 
         } catch (error) {
             setReconstructions([]);
@@ -54,15 +52,6 @@ const ReconstructionsListPage: FC = () => {
         }
     }
 
-    // const handleFilterChange = () => {
-    //     setStartDate((document.getElementById('start-date') as HTMLInputElement).value);
-    //     setEndDate((document.getElementById('end-date') as HTMLInputElement).value);
-    // }
-
-    // const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    //     setStatus(event.target.value);
-    // }
-
     return(
         <div>
             <Header />
@@ -71,7 +60,7 @@ const ReconstructionsListPage: FC = () => {
             </div>
 
             <div className="top-container">
-                <div className="title">Заявки на реконструкцию</div>
+                <div className="titlee">Заявки на реконструкцию</div>
             </div>
 
             {loading && (
@@ -99,7 +88,7 @@ const ReconstructionsListPage: FC = () => {
                             </Row>
 
                             {reconstructions.map((item, _) => (
-                                <Row key={item.pk} onClick={() => handleRowClick(item.pk)} className="my-2 custom-row align-items-center">
+                                <Row key={item.pk} onClick={() => handleRowClick(item.pk)} className="my-2 align-items-center cursor-pointer">
                                     <Col>{item.pk}</Col>
                                     <Col>{item.status}</Col>
                                     <Col><DateDisplay dateString={item.creation_date || ''}/></Col>

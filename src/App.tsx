@@ -8,6 +8,7 @@ import { ROUTES } from './components/Routes';
 import RegisterPage from './pages/RegisterPage/RegisterPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import ReconstructionsListPage from './pages/ReconstructionsListPage/ReconstructionsListPage'
+import ReconstructionPage from './pages/ReconstructionPage/ReconstructionPage'
 
 // const { invoke } = (window as any).__TAURI__.tauri;
 
@@ -39,6 +40,7 @@ function App(){
       <Route path= "/works" element={<WorksPage/>}/>
       <Route path={`/work/:workId`} element={<WorkDetailPage />} />
       <Route path= {ROUTES.RECONSTRUCTIONS} element={<ReconstructionsListPage/>}/>
+      <Route path= {'/reconstructions/:pk'} element={<ReconstructionPage/>}/>
     </Routes>
   )
 }

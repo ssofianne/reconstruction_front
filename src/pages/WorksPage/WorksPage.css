@@ -91,6 +91,7 @@ body{
 .application{
     width: 60px; 
     height:auto;
+    cursor: pointer;
 }
 
 .sum-request{
