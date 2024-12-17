@@ -3,14 +3,14 @@ import {BreadCrumbs} from '../../components/Breadcrumbs/BreadCrumbs';
 import Header from '../../components/Header/Header';
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
 import { useParams } from "react-router-dom";
-import { Work } from "../../modules/Work";
+import { work } from "../../modules/Work";
 import { Spinner } from "react-bootstrap";
 import { fetchWork } from '../../modules/mocks';
 import "./WorkDetailPage.css";
 
 export const WorkDetailPage: FC = () => {
     const { workId } = useParams();
-    const [work, setWork] = useState<Work | null>(null);
+    const [work, setWork] = useState<work | null>(null);
     const [, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 

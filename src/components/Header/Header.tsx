@@ -3,18 +3,20 @@ import './Header.css'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { logout } from '../../redux/AuthSlice';
+import { login, logout } from '../../redux/AuthSlice';
 import { ROUTES } from '../Routes';
 import { api } from '../../api';
 
-interface User {
-    username: string | null; 
-}
+// interface User {
+//     username: string | null; 
+// }
 
 const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const toggleMobileMenu = () => {setIsMobileMenuOpen(!isMobileMenuOpen);};
-    const user: User = useSelector((state: RootState) => state.auth.user); // Доступ к пользователю из Redux
+    // const user: User = useSelector((state: RootState) => state.auth.user); 
+    // const [isAuthenticated, username, is_staff] = useSelector ((state)=>state.auth)
+    const { isAuthenticated, username } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
 
     const handleLogout = async () => {
@@ -53,21 +55,21 @@ const Header = () => {
                     </div>
                 </div>
                 <ul className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}>
-                    {user?.username ? (
+                    {isAuthenticated ? (
                         <>
                             <li className='username'>
-                                <Link  to={ROUTES.USER_PROFILE}>{user.username}</Link>
+                                <Link to={ROUTES.USER_PROFILE}>{username}</Link>
                             </li>
-                            <li><Link onClick={handleLogout} to={''}>Выйти</Link></li>
+                            <li><Link onClick={handleLogout} to=''>Выйти</Link></li>
                             <li><Link to={ROUTES.RECONSTRUCTIONS}>Реконструкции</Link></li>
                         </>
                     ) : (
                         <>
                             <li>
-                            <Link to="/login">Войти</Link>
+                                <Link to="/login">Войти</Link>
                             </li>
                             <li>
-                            <Link to="/register">Регистрация</Link>
+                                <Link to="/register">Регистрация</Link>
                             </li>
                         </>
                     )}

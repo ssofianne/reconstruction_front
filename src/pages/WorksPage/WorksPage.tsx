@@ -85,7 +85,7 @@ const WorksPage: React.FC = () => {
             console.log(`Работа с id: ${workId} успешно добавлена в заявку.`);
             setCount(count+1)
         } catch (error) {
-            alert("Данная работа уже добавлена в заявку")
+            alert("Ошибка при добавлении работы в заявку")
             console.error('Ошибка при добавлении работы в заявку:', error);
         }
     };

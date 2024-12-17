@@ -14,8 +14,8 @@ const ReconstructionsListPage: FC = () => {
     const [reconstructions, setReconstructions] = useState<Reconstruction[]>([]);
     const [loading, setLoading] = useState(false);
 
-    const [Date, setDate] = useState<string>('');
-    const [status, setStatus] = useState<string>('');
+    const [Date, ] = useState<string>('');
+    const [status, ] = useState<string>('');
 
     const navigate = useNavigate();
 

@@ -5,6 +5,8 @@ import { api } from '../../api';
 import { User } from '../../api/Api';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
+import { ROUTE_LABELS, ROUTES } from '../../components/Routes';
 
 const ProfilePage: FC = () => {
   const [email, setEmail] = useState('');
@@ -16,8 +18,8 @@ const ProfilePage: FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Получаем userId из Redux
-  const { user } = useSelector((state: RootState) => state.auth);
-  const userId = user?.id;
+  const { username, id } = useSelector((state: RootState) => state.auth);
+  const userId = id;
 
     useEffect(() => {
         if (!userId) {
@@ -41,7 +43,7 @@ const ProfilePage: FC = () => {
     }, [userId]);
 
     const handleProfileUpdate = async () => {
-        if (!user) {
+        if (!username) {
             alert('Пользователь не авторизован');
             return;
         }
@@ -75,6 +77,9 @@ const ProfilePage: FC = () => {
     <Container fluid className=" justify-content-center align-items-center ">
         <Row className="w-100">
         <Header />
+        <BreadCrumbs
+            crumbs={[{ label: ROUTE_LABELS.REGISTER, path: ROUTES.REGISTER }]}
+        />
             <Col xs={12} sm={8} md={6} lg={4} className="mx-auto">
             <div className="auth-container p-4 border rounded shadow">
                 <h2 className="text-center mb-4">Личный кабинет</h2>
@@ -136,7 +141,7 @@ const ProfilePage: FC = () => {
                     />
                 </Form.Group>
 
-                <Button variant="primary" onClick={handleProfileUpdate} className="w-100 mt-4">
+                <Button onClick={handleProfileUpdate} className="w-100 mt-4 updatee">
                     Обновить данные
                 </Button>
                 </Form>

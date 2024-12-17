@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { api } from '../../api';
 import { Reconstruction, Work } from '../../api/Api';
 import ReconstructionCard from "../../components/ReconstructionCard/ReconstructionCard";
+import { RootState } from '../../redux/store';
 
 const ReconstructionPage: FC = () => {
     const [loading, setLoading] = useState(false);
@@ -23,7 +24,7 @@ const ReconstructionPage: FC = () => {
   
     const navigate = useNavigate();
     const { pk } = useParams();
-    const user = useSelector((state: any) => state.auth.user);
+    const { username } = useSelector((state: RootState) => state.auth);
 
     const fetchReconstruction = async () => {
         if (!pk) {
@@ -34,7 +35,7 @@ const ReconstructionPage: FC = () => {
         try {
             const response = await api.reconstructions.reconstructionsRead(pk);
             const data = response.data;
-            if (data.reconstruction?.creator != user.username) {
+            if (data.reconstruction?.creator != username) {
                 setIsError(true);
             }
             if (data.reconstruction && data.works) {
@@ -77,7 +78,7 @@ const ReconstructionPage: FC = () => {
                 .then((response) => {
                     const data = response.data;
                     
-                    if (data.reconstruction?.creator != user.username) {
+                    if (data.reconstruction?.creator != username) {
                         setIsError(true);
                     }
                     if (data.works) {
@@ -131,7 +132,7 @@ const ReconstructionPage: FC = () => {
                 api.reconstructions.reconstructionsSpaceUpdate(reconstructionNumberString, pkString)
                     .then((response) => {
                         const data = response.data;
-                        if (data.reconstruction?.creator != user.username) {
+                        if (data.reconstruction?.creator != username) {
                             setIsError(true);
                         }
                         if (data.works) {

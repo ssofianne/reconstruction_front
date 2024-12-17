@@ -27,10 +27,12 @@
     font-size: medium;
     cursor: pointer;
     color: black;
+    transition: 0.3s;
 }
 
 .inputField button:hover {
     background-color: rgba(114, 169, 224, 2); 
+    color: white;
 }
 
 @media (max-width: 768px) {
