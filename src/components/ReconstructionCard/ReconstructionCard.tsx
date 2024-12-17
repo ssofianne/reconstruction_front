@@ -1,11 +1,12 @@
-import { FC } from 'react';
+// import { FC } from 'react';
 import './ReconstructionCard.css';
+import { FC, useEffect, useState } from "react";
 
 interface ReconstructionCardProps {
   title: string;
   imageurl: string;
   price: number | undefined;
-  space: number; 
+  space: number | undefined; 
   imageClickHandler: () => void;
   HandleEdit: (space: number) => void;
   HandleDelete: () => void;
@@ -19,8 +20,19 @@ const ReconstructionCard: FC<ReconstructionCardProps> = ({
     space = 0,
     imageClickHandler,
     HandleEdit, 
-    HandleDelete 
+    HandleDelete
   }) => {
+const [myspace, setmyspace] = useState<number>(1);
+
+    useEffect(() => {
+      setmyspace(space);
+  }, []);
+
+  function convertTo(input: string): number {
+    const result = Number(input);
+    return result
+  }
+
   return (
     <div className="card-container">
       <div >
@@ -37,17 +49,18 @@ const ReconstructionCard: FC<ReconstructionCardProps> = ({
           <p>Цена: {price} ₽/м²</p>
           <div>
             Объем работ:
-            <input
+            {/* <input
                 type="text"
                 className="value-input"
                 placeholder='0'
-                defaultValue={space.toString()} 
-              />
+                value={myspace}
+              /> */}
+              <input className="value-input" value={myspace} placeholder={'0'} onChange={(event => setmyspace(convertTo(event.target.value)))}/>
             м²
           </div>
         </div>
         <div className="actions">
-          <button className="edit-btn" onClick={() => HandleEdit(space ?? 0)}>
+          <button className="edit-btn" onClick={() => HandleEdit(myspace)}>
             Изменить объем
           </button>
         </div>

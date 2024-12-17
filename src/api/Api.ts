@@ -112,6 +112,36 @@ export interface Work {
   imageurl?: string | null;
 }
 
+export interface ReconstructionWork {
+  /** ID */
+  pk?: number;
+  /**
+   * Title
+   * @minLength 1
+   * @maxLength 100
+   */
+  title: string;
+  /**
+   * Description
+   * @minLength 1
+   */
+  description?: string;
+  /**
+   * Price
+   * @min -2147483648
+   * @max 2147483647
+   */
+  price?: number;
+  /**
+   * Imageurl
+   * @format uri
+   * @maxLength 200
+   */
+  imageurl?: string | null;
+
+  space?: number | null;
+}
+
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
 import axios from "axios";
 
@@ -513,6 +543,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
             description?: string;
             price?: number;
             imageurl?: string;
+            space?: number;
           }[];
         },
         any
@@ -616,6 +647,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     reconstructionsSpaceUpdate: (
       reconstructionId: string,
       workId: string,
+      data: { space: number },
       params: RequestParams = {},
     ) =>
       this.request<
@@ -644,6 +676,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/reconstructions/${reconstructionId}/space/${workId}/`,
         method: "PUT",
         secure: true,
+        body: data,
         ...params,
       }),
 

@@ -26,6 +26,7 @@ const WorksPage: React.FC = () => {
     const [works, setWorks] = useState<Work[]>([]);
     const [loadingWorks, setLoadingWorks] = useState(false);
 
+    const[add, setAdd] = useState(false)
     const [count, setCount] = useState(0);
     const [draftReconstructionID, setDraftReconstructionID] = useState(0);
     const navigate = useNavigate();
@@ -84,6 +85,7 @@ const WorksPage: React.FC = () => {
             await api.reconstruction.reconstructionDraftCreate({ work_id: workId });
             console.log(`Работа с id: ${workId} успешно добавлена в заявку.`);
             setCount(count+1)
+            fetchAllWorks()
         } catch (error) {
             alert("Ошибка при добавлении работы в заявку")
             console.error('Ошибка при добавлении работы в заявку:', error);

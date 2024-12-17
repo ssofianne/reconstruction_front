@@ -77,6 +77,10 @@
     background-color: rgba(255, 255, 255, 0.792);
     padding: 5px;
     border-radius: 10px;
+    transition: background-color 0.3s !important;
+}
+.username:hover{
+    background-color: #659dd5 !important;
 }
 
 @media (max-width: 768px) { 

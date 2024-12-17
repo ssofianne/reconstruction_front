@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from '../../components/Header/Header';
 import { useSelector } from "react-redux";
 import { api } from '../../api';
-import { Reconstruction, Work } from '../../api/Api';
+import { Reconstruction, Work, ReconstructionWork } from '../../api/Api';
 import ReconstructionCard from "../../components/ReconstructionCard/ReconstructionCard";
 import { RootState } from '../../redux/store';
 
@@ -17,10 +17,9 @@ const ReconstructionPage: FC = () => {
     const [loading, setLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [reconstruction, setReconstruction] = useState<Reconstruction>();
-    const [works, setWorks] = useState<Work[]>();
+    const [works, setWorks] = useState<ReconstructionWork[]>();
     const [place, setPlace] = useState("");
-    const [fundraising, setFundraising] = useState<number>(0)
-    const [space, setSpace] = useState<number>(0)
+    const [fundraising, setFundraising] = useState<number>(0);
   
     const navigate = useNavigate();
     const { pk } = useParams();
@@ -40,7 +39,7 @@ const ReconstructionPage: FC = () => {
             }
             if (data.reconstruction && data.works) {
                 const reconstructionData = data.reconstruction as Reconstruction;
-                const worksData = data.works as Work[];
+                const worksData = data.works as ReconstructionWork[];
     
                 setReconstruction(reconstructionData);
                 setWorks(worksData);
@@ -81,12 +80,12 @@ const ReconstructionPage: FC = () => {
                     if (data.reconstruction?.creator != username) {
                         setIsError(true);
                     }
-                    if (data.works) {
-                        const worksData = data.works as Work[];
-                        setWorks(worksData);
-                    } else {
-                        setIsError(true);
-                    }
+                    // if (data.works) {
+                    //     const worksData = data.works as Work[];
+                    //     // setWorks(worksData);
+                    // } else {
+                    //     setIsError(true);
+                    // }
                     setLoading(false);
                 })
                 .catch(() => {
@@ -101,7 +100,7 @@ const ReconstructionPage: FC = () => {
 
     const handleChangePlaceClick = async () => {
         if (reconstruction && reconstruction.pk && pk && reconstruction.status == 'draft') {
-            const newPlace = place.trim(); // Удаляет пробелы вокруг строки
+            const newPlace = place.trim();
             if (newPlace) {
                 setLoading(true);
                 try {
@@ -122,25 +121,25 @@ const ReconstructionPage: FC = () => {
         }
     }; 
 
-    const handleChangeSpaceClick = async (pk: number) => {
+    const handleChangeSpaceClick = async (pk: number, work_space?: number) => {
         if (reconstruction && reconstruction.pk && pk && reconstruction.status === 'draft') {
             const reconstructionNumberString = String(reconstruction.pk);
             const pkString = String(pk);
-            const newSpace = space;
-            if (newSpace){
+            console.log(work_space);
+            if (work_space){
                 setLoading(true);
-                api.reconstructions.reconstructionsSpaceUpdate(reconstructionNumberString, pkString)
+                api.reconstructions.reconstructionsSpaceUpdate(reconstructionNumberString, pkString, { space: work_space })
                     .then((response) => {
                         const data = response.data;
                         if (data.reconstruction?.creator != username) {
                             setIsError(true);
                         }
-                        if (data.works) {
-                            const worksData = data.works as Work[];
-                            setWorks(worksData);
-                        } else {
-                            setIsError(true);
-                        }
+                        // if (data.works) {
+                        //     const worksData = data.works as Work[];
+                        //     // setWorks(worksData);
+                        // } else {
+                        //     setIsError(true);
+                        // }
                         setLoading(false);
                     })
                     .catch(() => {
@@ -148,7 +147,9 @@ const ReconstructionPage: FC = () => {
                         setLoading(false);
                     });
                 alert('Объем работы успешно изменен')   
-            } else {alert('Введите необходимый объем работ')}
+            } else {
+                alert('Введите необходимый объем работ')
+            }
         } else {
             alert('Изменение реконструкции невозможно');
         }
@@ -174,7 +175,7 @@ const ReconstructionPage: FC = () => {
 
             navigate(ROUTES.RECONSTRUCTIONS);
         } else {
-            alert('Изменение этой заявки невозможно');
+            alert('Вы уже сформировали эту заявку');
         }
     };
        
@@ -215,9 +216,9 @@ const ReconstructionPage: FC = () => {
                                                 imageurl={item.imageurl || ''}
                                                 title={item.title}
                                                 price={item.price}
-                                                space={item.space ?? 0}
+                                                space={item.space}
                                                 imageClickHandler={() => handleCardClick(item.pk)}
-                                                HandleEdit={() => handleChangeSpaceClick(item.pk)}
+                                                HandleEdit={(got_work_space) => handleChangeSpaceClick(item.pk, got_work_space)}
                                                 HandleDelete={() => handleDeleteClick(item.pk)}
                                             />
                                         </Col>
