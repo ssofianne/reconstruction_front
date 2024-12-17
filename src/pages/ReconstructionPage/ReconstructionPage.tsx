@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { Button, Col, Row, Spinner } from "react-bootstrap";
 // import InputField from "../components/InputField";
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
-import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
+import { ROUTE_LABELS, ROUTES } from '../../components/Routes';
 import { useNavigate, useParams } from "react-router-dom";
 // import { ApplicationRow } from "../components/ApplicationRow";
 import Header from '../../components/Header/Header';
@@ -19,6 +19,7 @@ const ReconstructionPage: FC = () => {
     const [works, setWorks] = useState<Work[]>();
     const [place, setPlace] = useState("");
     const [fundraising, setFundraising] = useState<number>(0)
+    const [space, setSpace] = useState<number>(0)
   
     const navigate = useNavigate();
     const { pk } = useParams();
@@ -62,12 +63,120 @@ const ReconstructionPage: FC = () => {
         fetchReconstruction();
     }, [pk]);
   
-    const handleCardClick = (workId: number | undefined) => {
-        if (workId) {
-            navigate(`${ROUTES.WORKS}/${workId}`);
+    const handleCardClick = (workPk: number) => {
+        navigate(`/work/${workPk}/`);
+    };
+
+    const handleDeleteClick = (pk: number | undefined) => {
+        if (reconstruction && reconstruction.pk && pk && reconstruction.status == 'draft') {
+            const reconstructionNumberString = String(reconstruction.pk);
+            const pkString = String(pk);
+
+            setLoading(true);
+            api.reconstructions.reconstructionsSpaceDelete(reconstructionNumberString, pkString)
+                .then((response) => {
+                    const data = response.data;
+                    
+                    if (data.reconstruction?.creator != user.username) {
+                        setIsError(true);
+                    }
+                    if (data.works) {
+                        const worksData = data.works as Work[];
+                        setWorks(worksData);
+                    } else {
+                        setIsError(true);
+                    }
+                    setLoading(false);
+                })
+                .catch(() => {
+                    setIsError(true);
+                    setLoading(false);
+                });
+            alert('Работа успешно удалена из заявки на реконструкцию')    
+        } else {
+            alert('Изменение реконструкции невозможно');
         }
     };
- 
+
+    const handleChangePlaceClick = async () => {
+        if (reconstruction && reconstruction.pk && pk && reconstruction.status == 'draft') {
+            const newPlace = place.trim(); // Удаляет пробелы вокруг строки
+            if (newPlace) {
+                setLoading(true);
+                try {
+                    const response = await api.reconstructions.reconstructionsUpdate(pk, { ...reconstruction, place: newPlace });
+                    const updatedReconstruction = response.data;
+                    setReconstruction(updatedReconstruction);
+                    alert('Место работ успешно изменено');
+                } catch (error) {
+                    alert('Произошла ошибка при изменении места работ');
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                alert('Введите место работ');
+            }
+        } else {
+            alert('Изменение реконструкции невозможно');
+        }
+    }; 
+
+    const handleChangeSpaceClick = async (pk: number) => {
+        if (reconstruction && reconstruction.pk && pk && reconstruction.status === 'draft') {
+            const reconstructionNumberString = String(reconstruction.pk);
+            const pkString = String(pk);
+            const newSpace = space;
+            if (newSpace){
+                setLoading(true);
+                api.reconstructions.reconstructionsSpaceUpdate(reconstructionNumberString, pkString)
+                    .then((response) => {
+                        const data = response.data;
+                        if (data.reconstruction?.creator != user.username) {
+                            setIsError(true);
+                        }
+                        if (data.works) {
+                            const worksData = data.works as Work[];
+                            setWorks(worksData);
+                        } else {
+                            setIsError(true);
+                        }
+                        setLoading(false);
+                    })
+                    .catch(() => {
+                        setIsError(true);
+                        setLoading(false);
+                    });
+                alert('Объем работы успешно изменен')   
+            } else {alert('Введите необходимый объем работ')}
+        } else {
+            alert('Изменение реконструкции невозможно');
+        }
+    };
+
+    const handleDeleteButtonClick = () => {
+        if (reconstruction && reconstruction.pk && pk && reconstruction.status == 'draft') {
+            const reconstructionNumberString = String(reconstruction.pk);
+
+            api.reconstructions.reconstructionsDelete(reconstructionNumberString);
+
+            navigate(ROUTES.RECONSTRUCTIONS);
+        } else {
+            alert('Удаление реконструкции невозможно');
+        }
+    };
+
+    const handleSubmitButtonClick = () => {
+        if (reconstruction && reconstruction.pk && pk && reconstruction.status == 'draft') {
+            const reconstructionNumberString = String(reconstruction.pk);
+
+            api.reconstructions.reconstructionsCreateUpdate(reconstructionNumberString);
+
+            navigate(ROUTES.RECONSTRUCTIONS);
+        } else {
+            alert('Изменение этой заявки невозможно');
+        }
+    };
+       
     return (
         <div>
             <Header/>
@@ -81,6 +190,7 @@ const ReconstructionPage: FC = () => {
                     <>
                         <BreadCrumbs
                             crumbs={[
+                                {label: ROUTE_LABELS.RECONSTRUCTIONS, path: ROUTES.RECONSTRUCTIONS },
                                 { label: `Реконструкция` },
                             ]}
                         />
@@ -88,15 +198,11 @@ const ReconstructionPage: FC = () => {
                         <div className="container-up">
                             <div className="title-works">Реконструкционные работы</div>
                             <div>
-                                <input type="text" className="pplace" placeholder="Введите место" defaultValue={place}/>
+                                <input type="text" className="pplace" placeholder="Введите место" defaultValue={place} onChange={(e) => setPlace(e.target.value)}/>
                             </div>
                             <div className="title-fundraising">Результат сбора средств: 
                                 <p className="result-fundraising">{fundraising} ₽</p>
                             </div>
-                            {/* <div className="horizontal-container">
-                                <Button variant="primary" onClick={handleSubmitButtonClick}>Сформировать заявку</Button>
-                                <Button variant="danger" onClick={handleDeleteButtonClick}>Удалить заявку</Button>
-                            </div> */}
                         </div>
                         <div className='cards-buttons'>           
                             {works?.length ? (
@@ -108,10 +214,10 @@ const ReconstructionPage: FC = () => {
                                                 imageurl={item.imageurl || ''}
                                                 title={item.title}
                                                 price={item.price}
-                                                space={item.space}
+                                                space={item.space ?? 0}
                                                 imageClickHandler={() => handleCardClick(item.pk)}
-                                                HandleEdit={() => handleArrowClick(item.pk)}
-                                                HandleDelete={() => handleMinusClick(item.pk)}
+                                                HandleEdit={() => handleChangeSpaceClick(item.pk)}
+                                                HandleDelete={() => handleDeleteClick(item.pk)}
                                             />
                                         </Col>
                                     ))}
@@ -120,9 +226,9 @@ const ReconstructionPage: FC = () => {
                                 <div>Вы еще не добавили ни одной работы</div>
                             )}
                             <div className='buttons-rec'>
-                                <Button className='create-btn' >Изменить место работ</Button>
-                                <Button className='create-btn' >Сформировать заявку</Button>
-                                <Button className='delete-btnn' >Удалить заявку</Button>
+                                <Button className='create-btn' onClick={handleChangePlaceClick}>Изменить место работ</Button>
+                                <Button className='create-btn' onClick={handleSubmitButtonClick}>Сформировать заявку</Button>
+                                <Button className='delete-btnn' onClick={handleDeleteButtonClick}>Удалить заявку</Button>
                             </div>
                         </div>
                     </>

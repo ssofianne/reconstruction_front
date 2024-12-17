@@ -616,16 +616,33 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     reconstructionsSpaceUpdate: (
       reconstructionId: string,
       workId: string,
-      query?: {
-        /** Объем работы */
-        space?: string;
-      },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<
+      {
+        reconstruction?: {
+          pk?: number;
+          status?: string;
+          creation_date?: string;
+          apply_date?: string;
+          end_date?: string;
+          creator?: string;
+          moderator?: number;
+          place?: string;
+          fundraising?: number;
+        };
+        works?: {
+          pk?: number;
+          title?: string;
+          description?: string;
+          price?: number;
+          imageurl?: string;
+        }[];
+      }, 
+      any
+      >({
         path: `/reconstructions/${reconstructionId}/space/${workId}/`,
         method: "PUT",
-        query: query,
         secure: true,
         ...params,
       }),
@@ -640,7 +657,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reconstructionsSpaceDelete: (reconstructionId: string, workId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<
+      {
+        reconstruction?: {
+          pk?: number;
+          status?: string;
+          creation_date?: string;
+          apply_date?: string;
+          end_date?: string;
+          creator?: string;
+          moderator?: number;
+          place?: string;
+          fundraising?: number;
+        };
+        works?: {
+          pk?: number;
+          title?: string;
+          description?: string;
+          price?: number;
+          imageurl?: string;
+        }[];
+      },
+      any
+    >({
         path: `/reconstructions/${reconstructionId}/space/${workId}/`,
         method: "DELETE",
         secure: true,
@@ -775,4 +814,5 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
+  apiUserRead: any;
 }

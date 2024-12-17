@@ -21,6 +21,7 @@
     height: 275px;
     display: block; /* Устанавливает изображение в блок */
     object-fit: cover; /* Устанавливает режим обрезки изображения */
+    cursor: pointer;
 }
 
 .value-input{
@@ -97,7 +98,7 @@ input:focus::placeholder {
     display: flex;
     flex-direction: row;
     width: auto;
-    gap: 290px;
+    gap: 350px;
     padding-bottom: 10px;
     height: auto;
 }

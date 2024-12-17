@@ -1,5 +1,5 @@
 export interface work {
-  pk:number;
+  pk:number | undefined;
   imageurl:string;
   title:string;
   price:number;

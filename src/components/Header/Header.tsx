@@ -53,7 +53,7 @@ const Header = () => {
                     </div>
                 </div>
                 <ul className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}>
-                    {user.username ? (
+                    {user?.username ? (
                         <>
                             <li className='username'>
                                 <Link  to={ROUTES.USER_PROFILE}>{user.username}</Link>

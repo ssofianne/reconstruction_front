@@ -79,6 +79,16 @@ const WorksPage: React.FC = () => {
         }
     };
 
+    const addWorkToReconstruction = async (workId: number) => {
+        try {
+            await api.reconstruction.reconstructionDraftCreate({ work_id: workId });
+            console.log(`Работа с id: ${workId} успешно добавлена в заявку.`);
+            setCount(count+1)
+        } catch (error) {
+            alert("Данная работа уже добавлена в заявку")
+            console.error('Ошибка при добавлении работы в заявку:', error);
+        }
+    };
     return (
         <div>
             <Header />
@@ -121,7 +131,7 @@ const WorksPage: React.FC = () => {
                             <div>К сожалению, такая работа не найдена...</div>
                         ) : (
                             works.map((work) => (
-                                <WorkCard key={work.pk} work={work} />
+                                <WorkCard key={work.pk} work={work} onAddWork={addWorkToReconstruction} />
                             ))
                         )}
                     </div>
