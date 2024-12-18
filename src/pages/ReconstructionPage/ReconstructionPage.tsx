@@ -67,7 +67,7 @@ const ReconstructionPage: FC = () => {
         navigate(`/work/${workPk}/`);
     };
 
-    const handleDeleteClick = (pk: number | undefined) => {
+    const handleDeleteClick = async (pk: number | undefined) => {
         if (reconstruction && reconstruction.pk && pk && reconstruction.status == 'draft') {
             const reconstructionNumberString = String(reconstruction.pk);
             const pkString = String(pk);
@@ -77,22 +77,18 @@ const ReconstructionPage: FC = () => {
                 .then((response) => {
                     const data = response.data;
                     
-                    if (data.reconstruction?.creator != username) {
-                        setIsError(true);
-                    }
-                    // if (data.works) {
-                    //     const worksData = data.works as Work[];
-                    //     // setWorks(worksData);
-                    // } else {
+                    // if (data.reconstruction?.creator != username) {
                     //     setIsError(true);
                     // }
+                    
                     setLoading(false);
                 })
                 .catch(() => {
                     setIsError(true);
                     setLoading(false);
                 });
-            alert('Работа успешно удалена из заявки на реконструкцию')    
+            alert('Работа успешно удалена из заявки на реконструкцию') 
+            await fetchReconstruction();   
         } else {
             alert('Изменение реконструкции невозможно');
         }
@@ -121,34 +117,58 @@ const ReconstructionPage: FC = () => {
         }
     }; 
 
+    // const handleChangeSpaceClick = async (pk: number, work_space?: number) => {
+    //     if (reconstruction && reconstruction.pk && pk && reconstruction.status === 'draft') {
+    //         const reconstructionNumberString = String(reconstruction.pk);
+    //         const pkString = String(pk);
+    //         console.log(work_space);
+    //         if (work_space){
+    //             setLoading(true);
+    //             api.reconstructions.reconstructionsSpaceUpdate(reconstructionNumberString, pkString, { space: work_space })
+    //                 .then((response) => {
+    //                     const data = response.data;
+    //                     if (data.reconstruction?.creator != username) {
+    //                         setIsError(true);
+    //                     }
+    //                     setLoading(false);
+    //                 })
+    //                 .catch(() => {
+    //                     setIsError(true);
+    //                     setLoading(false);
+    //                 });
+    //             alert('Объем работы успешно изменен')
+    //             await fetchReconstruction();   
+    //         } else {
+    //             alert('Введите необходимый объем работ')
+    //         }
+    //     } else {
+    //         alert('Изменение реконструкции невозможно');
+    //     }
+    // };
     const handleChangeSpaceClick = async (pk: number, work_space?: number) => {
         if (reconstruction && reconstruction.pk && pk && reconstruction.status === 'draft') {
             const reconstructionNumberString = String(reconstruction.pk);
             const pkString = String(pk);
             console.log(work_space);
-            if (work_space){
+    
+            if (work_space) {
                 setLoading(true);
-                api.reconstructions.reconstructionsSpaceUpdate(reconstructionNumberString, pkString, { space: work_space })
-                    .then((response) => {
-                        const data = response.data;
-                        if (data.reconstruction?.creator != username) {
-                            setIsError(true);
-                        }
-                        // if (data.works) {
-                        //     const worksData = data.works as Work[];
-                        //     // setWorks(worksData);
-                        // } else {
-                        //     setIsError(true);
-                        // }
-                        setLoading(false);
-                    })
-                    .catch(() => {
-                        setIsError(true);
-                        setLoading(false);
-                    });
-                alert('Объем работы успешно изменен')   
+                try {
+                    const response = await api.reconstructions.reconstructionsSpaceUpdate(reconstructionNumberString, pkString, { space: work_space });
+                    console.log('Объем работы изменен:', response.data);
+                    
+                    await fetchReconstruction();
+    
+                    alert('Объем работы успешно изменен');
+                } catch (error) {
+                    console.error('Ошибка при изменении объема работы:', error);
+                    alert('Ошибка при изменении объема работы');
+                    setIsError(true);
+                } finally {
+                    setLoading(false);
+                }
             } else {
-                alert('Введите необходимый объем работ')
+                alert('Введите необходимый объем работ');
             }
         } else {
             alert('Изменение реконструкции невозможно');

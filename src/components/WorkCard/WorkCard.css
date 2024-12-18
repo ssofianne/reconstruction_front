@@ -95,4 +95,27 @@
     }
 }
 
+@media (max-width: 1000px) {
+    .card {
+        flex-direction: column;
+        width: 350px;
+    }
+    .title {
+        font-size: 18px; 
+    }
+
+    .price {
+        font-size: 20px;
+    }
+
+    .card-button {
+        padding: 10px 30px; 
+        font-size: 14px; 
+    }
+
+    .image {
+        height: 230px;
+    }
+}
+
 

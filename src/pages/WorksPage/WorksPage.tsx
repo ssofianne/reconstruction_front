@@ -26,7 +26,6 @@ const WorksPage: React.FC = () => {
     const [works, setWorks] = useState<Work[]>([]);
     const [loadingWorks, setLoadingWorks] = useState(false);
 
-    const[add, setAdd] = useState(false)
     const [count, setCount] = useState(0);
     const [draftReconstructionID, setDraftReconstructionID] = useState(0);
     const navigate = useNavigate();

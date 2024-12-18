@@ -21,14 +21,14 @@ body{
 .page_container{
     width: 100%;
     height: 100vh;
-    margin-left: 35px;
-    margin-right: 35px;
+    padding-left: 35px;
+    padding-right: 35px;
 }
 
 .reserch {
     margin-top: 30px;
     margin-bottom: 30px;
-    margin-left: 60px;
+    padding-left: 60px;
     display: flex;
     align-items: center; 
     gap: 10px; 
@@ -119,9 +119,10 @@ body{
     color: #5D86B6;
 }
 
-@media (max-width: 768px) {
+
+@media (max-width: 1290px) {
     .container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr); /* Две колонки */
         gap: 15px;
         width: 100%;
     }
@@ -140,5 +141,75 @@ body{
     .work_types {
         font-size: 16px;
         padding: 8px 15px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .container {
+        grid-template-columns: repeat(2, 1fr); /* Две колонки */
+        gap: 15px;
+        width: 100%;
+    }
+    .reserch {
+        margin-left: 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch; 
+        text-align: left;
+    }
+
+    .title_reserch {
+        font-size: 20px;
+    }
+
+    .work_types {
+        font-size: 16px;
+        padding: 8px 15px;
+    }
+}
+
+@media (max-width: 430px) {
+    .container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        width: 100%;
+    }
+    .page_container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .reserch {
+        margin-left: 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch; 
+        text-align: left;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .application{
+        width: 40px; 
+        height:auto;
+        cursor: pointer;
+    }
+    .title_reserch {
+        font-size: 21px;
+    }
+
+    .work_types {
+        font-size: 16px;
+        padding: 5px 10px;
+    }
+    .request{
+        margin-left: 0px;
+        padding-right: 0px;
+
+    }
+    .sum-request{
+        height: 15px;
+        width: 15px;
+        margin-top: 25px;
+        position:absolute; top:5px; left:33px;
+        font-size: 12px;
     }
 }

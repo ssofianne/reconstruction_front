@@ -78,6 +78,7 @@ input:focus::placeholder {
     display: flex;
     font-weight: bold;
     font-size: 27px;
+    padding-bottom: 0px !important;
 }
 
 .cards-buttons{
@@ -117,4 +118,27 @@ input:focus::placeholder {
 }
 .delete-btnn:hover{
     background-color: red !important;
+}
+
+@media (max-width: 1000px) {
+    .pplace{
+        border-radius: 20;
+        font-size: 18px;
+        width: auto;
+        padding-right: 10px;
+        height: 60px;
+    }
+    .title-fundraising{
+        font-size: 18px;
+        width: auto;
+        border-radius: 20px;
+        height: 60px;
+        /* width: 540px; */
+    }
+    .result-fundraising{
+        height: 60px;
+        width: auto;
+        padding-left: 100px;
+        font-size: 20px;
+    }
 }

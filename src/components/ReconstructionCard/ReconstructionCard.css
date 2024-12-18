@@ -1,5 +1,6 @@
 .card-container {
     width: 1120px;
+    /* width: 100%; */
     height: 275px;
     background: linear-gradient(180deg, #3E80C2 0%, #72A9E0 100%);
     margin-bottom: 20px;
@@ -10,17 +11,18 @@
 
 .cardd {
     height: auto;
-    margin-left: 15px; /* Уменьшите отступы */
-    margin-right: 15px; /* Уменьшите отступы */
-    margin-top: 15px; /* Уменьшите отступы */
+    margin-left: 15px;
+    margin-right: 15px; 
+    margin-top: 15px; 
     background: white;
 }
 
 .work-img {
     width: 428px;
+    /* width: 120%; */
     height: 275px;
-    display: block; /* Устанавливает изображение в блок */
-    object-fit: cover; /* Устанавливает режим обрезки изображения */
+    /* display: block; */
+    object-fit: cover;
     cursor: pointer;
 }
 
@@ -47,9 +49,11 @@ input:focus::placeholder {
 
 
 .info_work{
-    margin-left: 24px;
+    /* margin-left: 24px;
     margin-top: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 5px; */
+    padding-top: 10px;
+    flex: 1;
     font-weight: normal;
 }
 
@@ -135,4 +139,46 @@ input:focus::placeholder {
 .edit-btn:hover{
     background-color: #3E80C2;
     color: white;
+}
+
+
+@media (max-width: 1000px) {
+    .card-container {
+        width: 900px;
+        align-items: center;
+        border-radius: 20px; 
+    }
+
+    .work-img {
+        height: 275px;
+    }
+    .title-works{
+        font-size: 25px;
+        width: auto;
+    }
+    .title-card {
+        font-size: 20px;
+        width: 400px;
+    }
+    .delete-btn{
+        font-size: 20px;
+    }
+    .title_and_delete{
+        gap: 25px;
+    }
+    .info_work{
+        padding-top: 0px;
+        /* flex: 1; */
+        font-weight: normal;
+    }
+    .specifications {
+        font-size: 16px;
+    }
+    .edit-btn {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+    .card_and_buttons{
+        flex-direction: column !important;
+    }
 }
