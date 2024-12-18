@@ -10,6 +10,28 @@ import { DateDisplay } from '../../modules/DateDisplay';
 import { Container, Row, Spinner, Col } from "react-bootstrap";
 
 const ReconstructionsListPage: FC = () => {
+    const translations: {[key: string]: string} = {
+        "draft": "черновик",
+        "deleted": "удалена",
+        "created": "сформирована",
+        "completed": "завершена",
+        "rejected": "отклонена"
+    };
+    function translateElement(element: HTMLElement) {
+        const key = element.dataset.translation;
+        if (key && translations.hasOwnProperty(key)) {
+            element.textContent = translations[key];
+        }
+    }
+    
+    function translatePage() {
+        const elementsToTranslate = document.querySelectorAll<HTMLElement>('[data-translation]'); 
+        elementsToTranslate.forEach(element => {
+          if (element instanceof HTMLElement) {
+            translateElement(element);
+          }
+        });
+    }
 
     const [reconstructions, setReconstructions] = useState<Reconstruction[]>([]);
     const [loading, setLoading] = useState(false);
@@ -30,18 +52,18 @@ const ReconstructionsListPage: FC = () => {
             const data = response.data;
             const allReconstructions = data.reconstructions as Reconstruction[]; 
             console.log('Полученные данные из API:', allReconstructions);
-        
             setReconstructions(allReconstructions);
-
+            translatePage();
         } catch (error) {
             setReconstructions([]);
         } finally {
             setLoading(false);
+            // translatePage();
         }
     };
-
     useEffect(() => {
         fetchAllReconstructions();
+        // translatePage();
     }, [status, Date]);
 
     const handleRowClick = (id: number | undefined) => {
@@ -80,6 +102,7 @@ const ReconstructionsListPage: FC = () => {
                             <Row className='names align-items-center'>
                                 <Col>Номер</Col>
                                 <Col>Статус</Col>
+                                <Col>Создатель</Col>
                                 <Col>Дата создания</Col>
                                 <Col>Дата формирования</Col>
                                 <Col>Дата завершения</Col>
@@ -90,7 +113,8 @@ const ReconstructionsListPage: FC = () => {
                             {reconstructions.map((item, _) => (
                                 <Row key={item.pk} onClick={() => handleRowClick(item.pk)} className="my-2 align-items-center cursor-pointer">
                                     <Col>{item.pk}</Col>
-                                    <Col>{item.status}</Col>
+                                    <Col data-translation={item.status}>{item.status}</Col>
+                                    <Col>{item.creator}</Col>
                                     <Col><DateDisplay dateString={item.creation_date || ''}/></Col>
                                     <Col><DateDisplay dateString={item.apply_date || ''}/></Col>
                                     <Col><DateDisplay dateString={item.end_date || ''}/></Col>

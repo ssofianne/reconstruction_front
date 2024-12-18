@@ -87,7 +87,7 @@ const ReconstructionPage: FC = () => {
                     setIsError(true);
                     setLoading(false);
                 });
-            alert('Работа успешно удалена из заявки на реконструкцию') 
+            // alert('Работа успешно удалена из заявки на реконструкцию') 
             await fetchReconstruction();   
         } else {
             alert('Изменение реконструкции невозможно');
@@ -103,7 +103,7 @@ const ReconstructionPage: FC = () => {
                     const response = await api.reconstructions.reconstructionsUpdate(pk, { ...reconstruction, place: newPlace });
                     const updatedReconstruction = response.data;
                     setReconstruction(updatedReconstruction);
-                    alert('Место работ успешно изменено');
+                    // alert('Место работ успешно изменено');
                 } catch (error) {
                     alert('Произошла ошибка при изменении места работ');
                 } finally {
@@ -159,7 +159,7 @@ const ReconstructionPage: FC = () => {
                     
                     await fetchReconstruction();
     
-                    alert('Объем работы успешно изменен');
+                    // alert('Объем работы успешно изменен');
                 } catch (error) {
                     console.error('Ошибка при изменении объема работы:', error);
                     alert('Ошибка при изменении объема работы');

@@ -1,16 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// const loadAuthStateFromLocalStorage = () => {
-//     const authState = localStorage.getItem('auth');
-//     return authState ? JSON.parse(authState) : { isAuthenticated: false, user: { username: null, id: null } };
-// };
-  
-// const saveAuthStateToLocalStorage = (authState: AuthState) => {
-//     localStorage.setItem('auth', JSON.stringify(authState));
-// };
-
-// const initialState: AuthState = loadAuthStateFromLocalStorage();
-
 interface AuthState {
   isAuthenticated: boolean;
   username: string | null; 
@@ -34,14 +23,12 @@ const authSlice = createSlice({
       state.username = action.payload.username;
       state.is_staff =  action.payload.is_staff
       state.id = action.payload.id
-      // saveAuthStateToLocalStorage(state)
     },
     logout(state) {
       state.isAuthenticated = false;
       state.username = null;
       state.is_staff =  false;
       state.id = null;
-      // saveAuthStateToLocalStorage(state)
     },
   },
 });

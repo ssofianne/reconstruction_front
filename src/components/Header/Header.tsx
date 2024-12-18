@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom'; 
 import './Header.css'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { login, logout } from '../../redux/AuthSlice';
+import { logout } from '../../redux/AuthSlice';
 import { ROUTES } from '../Routes';
 import { api } from '../../api';
 
@@ -18,6 +18,7 @@ const Header = () => {
     // const [isAuthenticated, username, is_staff] = useSelector ((state)=>state.auth)
     const { isAuthenticated, username } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
@@ -25,6 +26,7 @@ const Header = () => {
     
             if (response) {
                 dispatch(logout()); // Удаление пользователя из Redux
+                navigate(ROUTES.HOME)
             } else {
                 console.error('Ошибка выхода: пустой ответ от сервера');
             }
