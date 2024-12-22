@@ -58,12 +58,10 @@ const ReconstructionsListPage: FC = () => {
             setReconstructions([]);
         } finally {
             setLoading(false);
-            // translatePage();
         }
     };
     useEffect(() => {
         fetchAllReconstructions();
-        // translatePage();
     }, [status, Date]);
 
     const handleRowClick = (id: number | undefined) => {
