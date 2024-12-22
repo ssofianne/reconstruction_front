@@ -9,6 +9,8 @@ import RegisterPage from './pages/RegisterPage/RegisterPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import ReconstructionsListPage from './pages/ReconstructionsListPage/ReconstructionsListPage'
 import ReconstructionPage from './pages/ReconstructionPage/ReconstructionPage'
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage'
+import ForbiddenPage from './pages/ForbiddenPage/ForbiddenPage'
 
 // const { invoke } = (window as any).__TAURI__.tauri;
 
@@ -41,6 +43,8 @@ function App(){
       <Route path={`/work/:workId`} element={<WorkDetailPage />} />
       <Route path= {ROUTES.RECONSTRUCTIONS} element={<ReconstructionsListPage/>}/>
       <Route path= {'/reconstructions/:pk'} element={<ReconstructionPage/>}/>
+      <Route path="*" element={<NotFoundPage />}/>
+      <Route path="/403" element={<ForbiddenPage />} />
     </Routes>
   )
 }
