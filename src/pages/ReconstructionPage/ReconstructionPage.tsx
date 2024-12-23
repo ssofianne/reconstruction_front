@@ -24,6 +24,7 @@ const ReconstructionPage: FC = () => {
     const navigate = useNavigate();
     const { pk } = useParams();
     const { username } = useSelector((state: RootState) => state.auth);
+    const { is_staff } = useSelector((state: RootState) => state.auth);
 
     const fetchReconstruction = async () => {
         if (!pk) {
@@ -34,7 +35,7 @@ const ReconstructionPage: FC = () => {
         try {
             const response = await api.reconstructions.reconstructionsRead(pk);
             const data = response.data;
-            if (data.reconstruction?.creator != username) {
+            if (data.reconstruction?.creator != username && is_staff!=true) {
                 setIsError(true);
             }
             if (data.reconstruction && data.works) {

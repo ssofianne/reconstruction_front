@@ -67,9 +67,9 @@
     position: relative;
  }
  .date-picker-container .form-control {
-   appearance: none;
-   -moz-appearance: none;
    -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
 
  }
  .react-datepicker__input-container{

@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
         const response = await api.login.loginCreate({ email, password });
         
         const id = response.data.pk;
-        const is_staff = response.data;
+        const is_staff = response.data.is_staff;
   
         // Сохраняем id в Redux
         dispatch(login({ username: email, id, is_staff }));

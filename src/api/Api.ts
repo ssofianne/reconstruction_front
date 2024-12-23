@@ -417,6 +417,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
           pk: any;
           email: string;
           password: string;
+          is_staff: boolean;
         },
         any
       >({

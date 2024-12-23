@@ -43,22 +43,20 @@ const ReconstructionsListPage: FC = () => {
     const [reconstructions, setReconstructions] = useState<Reconstruction[]>([]);
     const [loading, setLoading] = useState(false);
 
-    const [Date, ] = useState<string>('');
+    // const [Date, ] = useState<string>('');
     const [status, setStatus] = useState<string>('');
 
     const navigate = useNavigate();
 
-    const [startDate, setStartDate] = useState<Date | null>(null);
-    const [endDate, setEndDate] = useState<Date | null>(null);
+    const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+    const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
-    // Обработчик выбора начальной даты
     const handleStartDateChange = (date: Date | null) => {
-        setStartDate(date);
+        setStartDate(date === null ? undefined : date);
     };
 
-    // Обработчик выбора конечной даты
     const handleEndDateChange = (date: Date | null) => {
-        setEndDate(date);
+        setEndDate(date === null ? undefined : date);
     };
 
     const fetchAllReconstructions = async () => {
@@ -68,12 +66,10 @@ const ReconstructionsListPage: FC = () => {
                 status: status,
             };
 
-                // Если начальная дата выбрана, передаем её
             if (startDate) {
                 queryParams.apply_date_start = startDate.toISOString().split('T')[0];
             }
 
-            // Если конечная дата выбрана, передаем её
             if (endDate) {
                 queryParams.apply_date_end = endDate.toISOString().split('T')[0];
             }
@@ -101,7 +97,7 @@ const ReconstructionsListPage: FC = () => {
         if (creatorFilter) {
             setFilteredReconstructions(
                 reconstructions.filter((item) =>
-                    item.creator.toLowerCase().includes(creatorFilter.toLowerCase())
+                    item.creator?.toLowerCase().includes(creatorFilter.toLowerCase())
                 )
             );
         } else {
@@ -117,6 +113,31 @@ const ReconstructionsListPage: FC = () => {
             console.log("Ошибка перехода на страницу заявки по id")
         }
     }
+
+    const handleStatusButtonClick = async (reconstructionId: number, status: "completed" | "rejected") => {
+        try {
+            const reconstruction = reconstructions.find(item => item.pk === reconstructionId);
+            
+            if (reconstruction?.status === "completed" || reconstruction?.status === "rejected") {
+                alert('Невозможно изменить статус заявки. Она уже завершена.');
+                return;
+            }
+    
+            setLoading(true);
+            await api.reconstructions.reconstructionsFinishUpdate(reconstructionId.toString(), { status });
+
+            setReconstructions(prev => prev.map(item => 
+                item.pk === reconstructionId ? { ...item, status: status } : item
+            ));
+            fetchAllReconstructions();
+        } catch (error) {
+            console.log(`Ошибка при изменении статуса заявки: ${status}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    
 
     return(
         <div>
@@ -183,7 +204,6 @@ const ReconstructionsListPage: FC = () => {
                                         />
                                     </div>
                                 </Col>
-                                <Col></Col>
                             </Row>
                         </Container>
                     </div>
@@ -233,12 +253,32 @@ const ReconstructionsListPage: FC = () => {
                                     {is_staff ? (
                                         <>
                                         <Col>
-                                            <Button className='finish' type="button" disabled={loading}>
+                                            <Button 
+                                                className='finish' 
+                                                type="button" 
+                                                disabled={loading}
+                                                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                                    e.stopPropagation();
+                                                    if (item.pk !== undefined) {
+                                                        handleStatusButtonClick(item.pk, 'completed'); // Завершить заявку
+                                                    }
+                                                }}
+                                            >
                                                 {loading ? 'Завершение...' : 'Завершить'}
                                             </Button>
                                         </Col>
                                         <Col>
-                                            <Button className='finish' type="button" disabled={loading}>
+                                            <Button 
+                                                className='finish' 
+                                                type="button" 
+                                                disabled={loading}
+                                                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                                    e.stopPropagation();
+                                                    if (item.pk !== undefined) {
+                                                        handleStatusButtonClick(item.pk, 'rejected'); // Завершить заявку
+                                                    }
+                                                }}
+                                            >
                                                 {loading ? 'Отклонение...' : 'Отклонить'}
                                             </Button>
                                         </Col>
