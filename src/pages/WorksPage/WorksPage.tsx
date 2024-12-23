@@ -14,7 +14,7 @@ import { Work } from '../../api/Api';
 import './WorksPage.css';
 
 
-import { setSearchWork, setInputValue, setFlagSearch } from '../../redux/WorksSlice';
+import { setSearchWork, setInputValue, setFlagSearch} from '../../redux/WorksSlice';
 import { useNavigate } from 'react-router-dom';
 
 const WorksPage: React.FC = () => {
@@ -22,7 +22,7 @@ const WorksPage: React.FC = () => {
     const searchWork = useSelector((state: any) => state.works.searchWork);
     const inputValue = useSelector((state: any) => state.works.inputValue);
     const flagSearch = useSelector((state: any) => state.works.flagSearch);
-
+   
     const [works, setWorks] = useState<Work[]>([]);
     const [loadingWorks, setLoadingWorks] = useState(false);
 
@@ -62,6 +62,7 @@ const WorksPage: React.FC = () => {
     useEffect(() => {
         fetchAllWorks();
     }, [searchWork, flagSearch]);
+ 
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         dispatch(setInputValue(event.target.value));

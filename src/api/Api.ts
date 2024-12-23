@@ -486,7 +486,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     reconstructionsList: (
       query?: {
         status?: string;
-        apply_date?: string;
+        apply_date_start?: string;
+        apply_date_end?: string;
       },
       params: RequestParams = {},
     ) =>

@@ -45,3 +45,38 @@
 .table-container .col:last-child {
     border-right: none; /* Убираем правую границу у последней колонки */
 }
+
+.finish{
+    background-color: #659dd5 !important;
+    border: none !important;
+    transition: background-color 0.3s;
+}
+.finish:hover{
+    background-color: #345473 !important;
+}
+
+.startdate{
+    display: flex;
+}
+.start-end{
+    padding-top: 5px;
+    padding-right: 5px;
+}
+
+.date-picker-container {
+    position: relative;
+ }
+ .date-picker-container .form-control {
+   appearance: none;
+   -moz-appearance: none;
+   -webkit-appearance: none;
+
+ }
+ .react-datepicker__input-container{
+   display: contents;
+ }
+ .react-datepicker{
+   z-index: 1000;
+   position: absolute;
+ }
+

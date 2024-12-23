@@ -16,7 +16,7 @@ const Header = () => {
     const toggleMobileMenu = () => {setIsMobileMenuOpen(!isMobileMenuOpen);};
     // const user: User = useSelector((state: RootState) => state.auth.user); 
     // const [isAuthenticated, username, is_staff] = useSelector ((state)=>state.auth)
-    const { isAuthenticated, username } = useSelector((state: RootState) => state.auth);
+    const { isAuthenticated, username, is_staff } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
