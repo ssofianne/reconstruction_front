@@ -16,7 +16,7 @@ type WorkCardProps = {
 };
 
 const WorkCard: React.FC<WorkCardProps> = ({ work, onAddWork }) => {
-    const { is_staff } = useSelector((state: RootState) => state.auth);
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
     const handleAddWork = async () => {
         try {
             await onAddWork(work.pk);
@@ -36,7 +36,7 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, onAddWork }) => {
                 <Link to={`/work/${work.pk}/`} className="card-button">
                     Подробнее
                 </Link>
-                {!is_staff && (
+                {isAuthenticated && (
                     <button className="card-button" onClick={handleAddWork}>
                         Добавить
                     </button>

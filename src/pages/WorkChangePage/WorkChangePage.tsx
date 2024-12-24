@@ -187,7 +187,7 @@ const EditWorkPage: React.FC = () => {
             </Form>
 
             <Button
-                className="buttonch"
+                className="buttonch addorsave"
                 onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.preventDefault();
                     handleSubmit();

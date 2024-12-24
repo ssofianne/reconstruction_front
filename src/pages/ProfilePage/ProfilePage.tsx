@@ -78,14 +78,14 @@ const ProfilePage: FC = () => {
         <Row className="w-100">
         <Header />
         <BreadCrumbs
-            crumbs={[{ label: ROUTE_LABELS.REGISTER, path: ROUTES.REGISTER }]}
+            crumbs={[{ label: ROUTE_LABELS.USER_PROFILE, path: ROUTES.USER_PROFILE }]}
         />
             <Col xs={12} sm={8} md={6} lg={4} className="mx-auto">
             <div className="auth-container p-4 border rounded shadow">
                 <h2 className="text-center mb-4">Личный кабинет</h2>
 
                 {/* Сообщение об успехе */}
-                {successMessage && <Alert variant="success" className="mb-4">{successMessage}</Alert>}
+                {/* {successMessage && <Alert variant="success" className="mb-4">{successMessage}</Alert>} */}
 
                 {/* Сообщение об ошибке */}
                 {error && <Alert variant="danger" className="mb-4">{error}</Alert>}
