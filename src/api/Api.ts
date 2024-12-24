@@ -841,7 +841,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/works/{id}/image/
      * @secure
      */
-    worksImageCreate: (id: string, params: RequestParams = {}) =>
+    worksImageCreate: (id: string, params: {body: FormData}, RequestParams = {}) =>
       this.request<void, any>({
         path: `/works/${id}/image/`,
         method: "POST",

@@ -75,6 +75,11 @@ const Header = () => {
                             </li>
                         </>
                     )}
+                    {is_staff ? (
+                        <li>
+                        <Link to="/works-table">Таблица работ</Link>
+                        </li>
+                    ):null}
                     <li><Link to="/works">Виды работ</Link></li>
                 </ul>
             </div>

@@ -10,6 +10,7 @@ interface ReconstructionCardProps {
   imageClickHandler: () => void;
   HandleEdit: (space: number) => void;
   HandleDelete: () => void;
+  isDraft: boolean;
 }
 
 
@@ -20,7 +21,8 @@ const ReconstructionCard: FC<ReconstructionCardProps> = ({
     space = 0,
     imageClickHandler,
     HandleEdit, 
-    HandleDelete
+    HandleDelete, 
+    isDraft 
   }) => {
 const [myspace, setmyspace] = useState<number>(1);
 
@@ -41,28 +43,28 @@ const [myspace, setmyspace] = useState<number>(1);
       <div className="info-work">
         <div className='title_and_delete'>
           <div className="title-card">{title}</div>
-          <button className="delete-btn" onClick={HandleDelete}>
-            ✕
-          </button>
+          {isDraft &&(
+            <button className="delete-btn" onClick={HandleDelete}>
+              ✕
+            </button>
+          )
+          }
         </div>
         <div className="specifications">
           <p>Цена: {price} ₽/м²</p>
           <div>
             Объем работ:
-            {/* <input
-                type="text"
-                className="value-input"
-                placeholder='0'
-                value={myspace}
-              /> */}
               <input className="value-input" value={myspace} placeholder={'0'} onChange={(event => setmyspace(convertTo(event.target.value)))}/>
             м²
           </div>
         </div>
         <div className="actions">
-          <button className="edit-btn" onClick={() => HandleEdit(myspace)}>
-            Изменить объем
-          </button>
+          {isDraft &&(
+            <button className="edit-btn" onClick={() => HandleEdit(myspace)}>
+              Изменить объем
+            </button>
+          )
+          }
         </div>
       </div>
     </div>

@@ -117,35 +117,7 @@ const ReconstructionPage: FC = () => {
             alert('Изменение реконструкции невозможно');
         }
     }; 
-
-    // const handleChangeSpaceClick = async (pk: number, work_space?: number) => {
-    //     if (reconstruction && reconstruction.pk && pk && reconstruction.status === 'draft') {
-    //         const reconstructionNumberString = String(reconstruction.pk);
-    //         const pkString = String(pk);
-    //         console.log(work_space);
-    //         if (work_space){
-    //             setLoading(true);
-    //             api.reconstructions.reconstructionsSpaceUpdate(reconstructionNumberString, pkString, { space: work_space })
-    //                 .then((response) => {
-    //                     const data = response.data;
-    //                     if (data.reconstruction?.creator != username) {
-    //                         setIsError(true);
-    //                     }
-    //                     setLoading(false);
-    //                 })
-    //                 .catch(() => {
-    //                     setIsError(true);
-    //                     setLoading(false);
-    //                 });
-    //             alert('Объем работы успешно изменен')
-    //             await fetchReconstruction();   
-    //         } else {
-    //             alert('Введите необходимый объем работ')
-    //         }
-    //     } else {
-    //         alert('Изменение реконструкции невозможно');
-    //     }
-    // };
+    
     const handleChangeSpaceClick = async (pk: number, work_space?: number) => {
         if (reconstruction && reconstruction.pk && pk && reconstruction.status === 'draft') {
             const reconstructionNumberString = String(reconstruction.pk);
@@ -241,6 +213,7 @@ const ReconstructionPage: FC = () => {
                                                 imageClickHandler={() => handleCardClick(item.pk)}
                                                 HandleEdit={(got_work_space) => handleChangeSpaceClick(item.pk, got_work_space)}
                                                 HandleDelete={() => handleDeleteClick(item.pk)}
+                                                isDraft={reconstruction?.status === 'draft'} 
                                             />
                                         </Col>
                                     ))}
@@ -248,11 +221,13 @@ const ReconstructionPage: FC = () => {
                             ) : (
                                 <div>Вы еще не добавили ни одной работы</div>
                             )}
-                            <div className='buttons-rec'>
-                                <Button className='create-btn' onClick={handleChangePlaceClick}>Изменить место работ</Button>
-                                <Button className='create-btn' onClick={handleSubmitButtonClick}>Сформировать заявку</Button>
-                                <Button className='delete-btnn' onClick={handleDeleteButtonClick}>Удалить заявку</Button>
-                            </div>
+                            {reconstruction?.status === 'draft' && (
+                                <div className='buttons-rec'>
+                                    <Button className='create-btn' onClick={handleChangePlaceClick}>Изменить место работ</Button>
+                                    <Button className='create-btn' onClick={handleSubmitButtonClick}>Сформировать заявку</Button>
+                                    <Button className='delete-btnn' onClick={handleDeleteButtonClick}>Удалить заявку</Button>
+                                </div>
+                            )}
                         </div>
                     </>
                 ) : (

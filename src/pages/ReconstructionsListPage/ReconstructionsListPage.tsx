@@ -106,6 +106,16 @@ const ReconstructionsListPage: FC = () => {
         translatePage();
     }, [creatorFilter, reconstructions]);
 
+    // Добавляем polling для регулярного обновления данных
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            fetchAllReconstructions(); // Обновляем данные каждые 5 секунд
+        }, 5000); // Интервал 5 секунд
+
+        // Очистка интервала при размонтировании компонента
+        return () => clearInterval(intervalId);
+    }, [status, startDate, endDate]);
+
     const handleRowClick = (id: number | undefined) => {
         if (id) {
             navigate(`${ROUTES.RECONSTRUCTIONS}/${id}`);

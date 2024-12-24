@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './WorkCard.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 type WorkCardProps = {
     work: {
@@ -14,6 +16,7 @@ type WorkCardProps = {
 };
 
 const WorkCard: React.FC<WorkCardProps> = ({ work, onAddWork }) => {
+    const { is_staff } = useSelector((state: RootState) => state.auth);
     const handleAddWork = async () => {
         try {
             await onAddWork(work.pk);
@@ -33,9 +36,11 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, onAddWork }) => {
                 <Link to={`/work/${work.pk}/`} className="card-button">
                     Подробнее
                 </Link>
-                <button className="card-button" onClick={handleAddWork}>
-                    Добавить
-                </button>
+                {!is_staff && (
+                    <button className="card-button" onClick={handleAddWork}>
+                        Добавить
+                    </button>
+                )}
             </div>
         </div>
     );

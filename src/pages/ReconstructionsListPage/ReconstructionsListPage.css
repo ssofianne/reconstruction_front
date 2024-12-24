@@ -21,7 +21,7 @@
 }
 
 .table-container {
-    border: 1px solid #000; /* Чёрная обводка вокруг всей таблицы */
+    border: 1px solid #000; 
     border-radius: 8px; /* Скруглённые углы */
     padding: 16px; /* Внутренний отступ */
     margin: 16px;
@@ -79,4 +79,19 @@
    z-index: 1000;
    position: absolute;
  }
+
+ @media (min-width: 769px) {
+    .table-container {
+      padding: 0px;
+      margin: 0px;
+    }
+  
+    .names {
+      font-size: 12px ;
+    }
+
+    .finish{
+        font-size: 12px ;
+    }
+  }
 
