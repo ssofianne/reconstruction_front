@@ -122,7 +122,30 @@ input:focus::placeholder {
 
 @media (max-width: 1000px) {
     .pplace{
-        border-radius: 20;
+        border-radius: 20px;
+        font-size: 18px;
+        width: auto;
+        padding-right: 10px;
+        height: 60px;
+    }
+    .title-fundraising{
+        font-size: 18px;
+        width: auto;
+        border-radius: 20px;
+        height: 60px;
+        /* width: 540px; */
+    }
+    .result-fundraising{
+        height: 60px;
+        width: auto;
+        padding-left: 100px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 800px) {
+    .pplace{
+        border-radius: 20px;
         font-size: 18px;
         width: auto;
         padding-right: 10px;

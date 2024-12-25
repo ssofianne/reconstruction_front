@@ -79,19 +79,22 @@
    z-index: 1000;
    position: absolute;
  }
-
- @media (min-width: 769px) {
+/* 
+ @media (min-width: 600px) {
     .table-container {
       padding: 0px;
       margin: 0px;
     }
   
     .names {
-      font-size: 12px ;
+      font-size: 12px !important;
+    }
+    .titlee {
+        font-size: 12px !important;
     }
 
     .finish{
-        font-size: 12px ;
+        font-size: 12px !important;
     }
-  }
+  } */
 

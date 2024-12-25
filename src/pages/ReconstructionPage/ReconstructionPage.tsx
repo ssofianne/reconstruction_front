@@ -37,6 +37,7 @@ const ReconstructionPage: FC = () => {
             const data = response.data;
             if (data.reconstruction?.creator != username && is_staff!=true) {
                 setIsError(true);
+                navigate('/403');
             }
             if (data.reconstruction && data.works) {
                 const reconstructionData = data.reconstruction as Reconstruction;

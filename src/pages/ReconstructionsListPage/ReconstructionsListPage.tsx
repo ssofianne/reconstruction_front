@@ -108,6 +108,12 @@ const ReconstructionsListPage: FC = () => {
         const result = await dispatch(changeStatus({ applicationId: reconstructionId.toString(), status: newStatus }));
         if (changeStatus.rejected.match(result)) {
             console.error('Не удалось изменить статус заявки');
+        } else {
+            dispatch(fetchReconstructions({
+                startDate: startDate?.toISOString().split('T')[0] || '',
+                endDate: endDate?.toISOString().split('T')[0] || '',
+                status,
+            }));
         }
     };
     
