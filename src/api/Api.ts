@@ -465,7 +465,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, void>({
+      this.request<{
+        draft_reconstruction_id: number
+        count_of_works: number
+      }, void>({
         path: `/reconstruction/draft/`,
         method: "POST",
         body: data,
@@ -841,11 +844,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/works/{id}/image/
      * @secure
      */
-    worksImageCreate: (id: string, params: {body: FormData}, RequestParams = {}) =>
+    worksImageCreate: (id: string, data: { pic: File }, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/works/${id}/image/`,
         method: "POST",
+        body: data,
         secure: true,
+        type: ContentType.FormData,
+        format: "json",
         ...params,
       }),
   };

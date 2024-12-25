@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
 import Header from '../../components/Header/Header';
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
-import { api } from '../../api';
 import { Reconstruction } from '../../api/Api';
 import { DateDisplay } from '../../modules/DateDisplay';
 import { Container, Row, Spinner, Col, Button, Form } from "react-bootstrap";
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from 'react-datepicker';
+import { AppDispatch, RootState } from '../../redux/store';
+import { fetchReconstructions, changeStatus } from '../../redux/ReconstructionsSlice';
 
 const ReconstructionsListPage: FC = () => {
     const translations: {[key: string]: string} = {
@@ -40,16 +40,14 @@ const ReconstructionsListPage: FC = () => {
     const [creatorFilter, setCreatorFilter] = useState<string>('');
     const [filteredReconstructions, setFilteredReconstructions] = useState<Reconstruction[]>([]);
     const { is_staff } = useSelector((state: RootState) => state.auth);
-    const [reconstructions, setReconstructions] = useState<Reconstruction[]>([]);
-    const [loading, setLoading] = useState(false);
-
-    // const [Date, ] = useState<string>('');
-    const [status, setStatus] = useState<string>('');
-
-    const navigate = useNavigate();
-
+    // const [reconstructions, setReconstructions] = useState<Reconstruction[]>([]);
     const [startDate, setStartDate] = useState<Date | undefined>(undefined);
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+    const [status, setStatus] = useState<string>('');
+
+    const dispatch = useDispatch<AppDispatch>();
+    const { data, loading, error } = useSelector((state: RootState) => state.reconstructions);
+    const navigate = useNavigate();
 
     const handleStartDateChange = (date: Date | null) => {
         setStartDate(date === null ? undefined : date);
@@ -59,62 +57,44 @@ const ReconstructionsListPage: FC = () => {
         setEndDate(date === null ? undefined : date);
     };
 
-    const fetchAllReconstructions = async () => {
-        setLoading(true);
-        try {
-            const queryParams: any = {
-                status: status,
-            };
-
-            if (startDate) {
-                queryParams.apply_date_start = startDate.toISOString().split('T')[0];
-            }
-
-            if (endDate) {
-                queryParams.apply_date_end = endDate.toISOString().split('T')[0];
-            }
-
-            const response = await api.reconstructions.reconstructionsList(queryParams);
-            const data = response.data;
-            const allReconstructions = data.reconstructions as Reconstruction[]; 
-            setReconstructions(allReconstructions);
-            setFilteredReconstructions(allReconstructions);
-            translatePage();
-        } catch (error) {
-            setReconstructions([]);
-            setFilteredReconstructions([]);
-        } finally {
-            setLoading(false);
-        }
-    };
+    useEffect(() => {
+        translatePage();
+    }, [filteredReconstructions]);
 
     useEffect(() => {
-        fetchAllReconstructions();
-    }, [status, startDate, endDate]);
+        dispatch(fetchReconstructions({
+            startDate: startDate?.toISOString().split('T')[0] || '',
+            endDate: endDate?.toISOString().split('T')[0] || '',
+            status,
+        }));
+    }, [dispatch, startDate, endDate, status]);
 
     // Фильтрация по создателю
     useEffect(() => {
         if (creatorFilter) {
             setFilteredReconstructions(
-                reconstructions.filter((item) =>
+                data.reconstructions.filter((item) =>
                     item.creator?.toLowerCase().includes(creatorFilter.toLowerCase())
                 )
             );
         } else {
-            setFilteredReconstructions(reconstructions); // Если фильтр пустой, показываем все данные
+            setFilteredReconstructions(data.reconstructions);
         }
-        translatePage();
-    }, [creatorFilter, reconstructions]);
+    }, [creatorFilter, data.reconstructions]);
 
     // Добавляем polling для регулярного обновления данных
     useEffect(() => {
         const intervalId = setInterval(() => {
-            fetchAllReconstructions(); // Обновляем данные каждые 5 секунд
+            dispatch(fetchReconstructions({
+                startDate: startDate?.toISOString().split('T')[0] || '',
+                endDate: endDate?.toISOString().split('T')[0] || '',
+                status,
+            })); // Теперь вызов через dispatch
         }, 5000); // Интервал 5 секунд
-
+    
         // Очистка интервала при размонтировании компонента
         return () => clearInterval(intervalId);
-    }, [status, startDate, endDate]);
+    }, [dispatch, status, startDate, endDate]); // Обновление по изменению этих переменных
 
     const handleRowClick = (id: number | undefined) => {
         if (id) {
@@ -124,31 +104,13 @@ const ReconstructionsListPage: FC = () => {
         }
     }
 
-    const handleStatusButtonClick = async (reconstructionId: number, status: "completed" | "rejected") => {
-        try {
-            const reconstruction = reconstructions.find(item => item.pk === reconstructionId);
-            
-            if (reconstruction?.status === "completed" || reconstruction?.status === "rejected") {
-                alert('Невозможно изменить статус заявки. Она уже завершена.');
-                return;
-            }
-    
-            setLoading(true);
-            await api.reconstructions.reconstructionsFinishUpdate(reconstructionId.toString(), { status });
-
-            setReconstructions(prev => prev.map(item => 
-                item.pk === reconstructionId ? { ...item, status: status } : item
-            ));
-            fetchAllReconstructions();
-        } catch (error) {
-            console.log(`Ошибка при изменении статуса заявки: ${status}`);
-        } finally {
-            setLoading(false);
+    const handleStatusButtonClick = async (reconstructionId: number, newStatus: "completed" | "rejected") => {
+        const result = await dispatch(changeStatus({ applicationId: reconstructionId.toString(), status: newStatus }));
+        if (changeStatus.rejected.match(result)) {
+            console.error('Не удалось изменить статус заявки');
         }
     };
     
-    
-
     return(
         <div>
             <Header />
@@ -220,7 +182,6 @@ const ReconstructionsListPage: FC = () => {
                 )}
             </div>
             {loading && (
-                console.log('Реконструкции для отображения:', reconstructions),
                 <div className="loadingBg">
                     <Spinner animation="border" />
                 </div>

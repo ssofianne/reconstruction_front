@@ -12,7 +12,7 @@ type WorkCardProps = {
         price: number;
         imageurl: string;
     };
-    onAddWork: (workId: number) => Promise<void>;
+    onAddWork: (workId: number) => void;
 };
 
 const WorkCard: React.FC<WorkCardProps> = ({ work, onAddWork }) => {

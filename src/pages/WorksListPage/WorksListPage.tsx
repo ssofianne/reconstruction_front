@@ -1,65 +1,57 @@
 import './WorksListPage.css';
-import { FC, useState, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../../api';
-import { Work } from '../../api/Api'; // Подразумевается, что у вас есть тип для работы
 import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 import Header from '../../components/Header/Header';
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
 import { ROUTE_LABELS, ROUTES } from '../../components/Routes';
+import { useAppDispatch, RootState } from '../../redux/store';
+import { fetchWorks, createWork} from "../../redux/WorksSlice";
+import { useSelector } from 'react-redux';
+import { deleteWork } from '../../redux/WorkSlice';
 
 const WorksListPage: FC = () => {
-    const [works, setWorks] = useState<Work[]>([]);
-    const [loading, setLoading] = useState(false);
+    const { data, loading } = useSelector((state: RootState) => state.works);
+    const { is_staff } = useSelector((state: any) => state.auth);
 
+    const appDispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    // Запрос на получение всех видов работ
-    const fetchWorks = async () => {
-        setLoading(true);
-        try {
-            const response = await api.works.worksList(); 
-            const data = response.data;
-            const allWorks = data.works as Work[];
-            setWorks(allWorks);
-        } catch (error) {
-            console.error("Ошибка при загрузке работ", error);
-            setWorks([]); 
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
-        fetchWorks();
-    }, []);
+        if (!is_staff) {
+            navigate('/403');
+            return;
+        }
+        appDispatch(fetchWorks()); // Получаем все работы
+    }, [is_staff, appDispatch, navigate]);
 
     // Обработчик клика на строку
     const handleRowClick = (id: number | undefined) => {
         if (id) {
             navigate(`/work/${id}`); // Переход к странице конкретной работы
-        } else {
-            console.log("Ошибка перехода на страницу работы по id");
-        }
+        } 
     };
     const handleChangeClick = (id: number | undefined) => {
-            if (id) {
-                navigate(`/work-change/${id}`);
-            } else {
-                console.log("Ошибка перехода на страницу  по id")
-            }
+        if (id) {
+            navigate(`/work-change/${id}`);
+        } else {
+            console.log("Ошибка перехода на страницу  по id")
+        }
     }
     const handleAddClick = () => {
         navigate(`/work-change`);
     }
 
-    const handleDeleteClick = (id: number | undefined) => {
-        const workNumberString = String(id);
-
-        api.works.worksDeleteDelete(workNumberString);
-        fetchWorks();
-
-        // navigate(ROUTES.RECONSTRUCTIONS);
+    const handleDeleteClick = async (id: number | undefined) => {
+        if (!id) return;
+        try {
+            const workId = String(id);
+            // Используем экшен deleteWork для удаления работы
+            await appDispatch(deleteWork(workId)).unwrap();
+            appDispatch(fetchWorks()); // Перезапросить данные после удаления
+        } catch (error) {
+            console.error('Ошибка при удалении работы:', error);
+        }
     }
 
     return (
@@ -94,10 +86,10 @@ const WorksListPage: FC = () => {
                         <Col>Действия</Col>
                     </Row>
 
-                    {works.length === 0 ? (
+                    {data.works.length === 0 ? (
                         <div>Виды работ не найдены.</div>
                     ) : (
-                        works.map((work) => (
+                        data.works.map((work) => (
                             <Row key={work.pk} onClick={() => handleRowClick(work.pk)} className="my-2 align-items-center cursor-pointer">
                                 <Col><img src={work.imageurl || 'src/assets/default_image.png'} className='imginlist'/></Col>
                                 <Col>{work.title}</Col>

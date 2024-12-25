@@ -1,119 +1,114 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Spinner } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../api";
-import { Work } from "../../api/Api";
+import { useAppDispatch, RootState } from '../../redux/store';
+import { fetchWork, updateWork, updateWorkImage } from "../../redux/WorkSlice";
 import Header from "../../components/Header/Header";
 import './WorkChangePage.css';
 import { BreadCrumbs } from "../../components/Breadcrumbs/BreadCrumbs";
 import { ROUTE_LABELS, ROUTES } from "../../components/Routes";
+import { useSelector } from "react-redux";
+import { Work } from "../../api/Api";
+import { createWork } from "../../redux/WorksSlice";
 
 const EditWorkPage: React.FC = () => {
     const { pk } = useParams();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
-    const [work, setWork] = useState<Work | null>(null); // Состояние для данных работы
-    const [loading, setLoading] = useState<boolean>(true); // Состояние загрузки
-    const [error, setError] = useState<string | null>(null); // Состояние ошибки
+    const { data: work, loading, error } = useSelector((state: RootState) => state.work);
 
-    // Локальные состояния для полей формы
     const [imageurl, setImage] = useState<File | null>(null);
     const [title, setTitle] = useState<string>("");
     const [price, setPrice] = useState<number>(0);
     const [description, setDescription] = useState<string>("");
 
-    // Состояние для URL изображения (генерируем для отображения)
     const [imageUrlPreview, setImageUrlPreview] = useState<string | null>(null);
 
-    // Функция загрузки данных работы (если pk существует)
-    const fetchWork = async () => {
-        if (!pk) return; // Если нет ID, не загружаем данные
-        setLoading(true);
-        try {
-            const response = await api.works.worksRead(pk!);
-            const data = response.data as Work;
-            setWork(data);
-            setTitle(data.title);
-            setPrice(data.price);
-            setDescription(data.description);
-            setImageUrlPreview(data.imageurl || null); // Задаем URL текущего изображения
-        } catch (error) {
-            console.error("Ошибка при загрузке данных:", error);
-            setError("Ошибка при загрузке данных работы.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Функция для отправки изменений
-    const handleSubmit = async () => {
-        setLoading(true);
-        try {
-            // Формируем данные для отправки
-            const updateData = {
-                title,
-                price: Number(price),
-                description,
-                imageurl,
-            };
-
-            // Если есть pk, то это обновление работы
-            if (pk) {
-                await api.works.worksChangeUpdate(pk!, updateData);
-            } else {
-                // Если pk нет, значит это новая работа, и нужно создать новую
-                await api.works.worksCreate(updateData); 
-            }
-
-            // Если изображение было изменено, отправляем его
-            if (imageurl && !pk) {
-                const formData = new FormData();
-                formData.append("pic", imageurl); // Добавляем файл изображения
-                await api.works.worksImageCreate(pk!, { body: formData });
-                // if (pk) {
-                //     // Запрос для обновления изображения существующей работы
-                //     await api.works.worksImageCreate(pk!, { body: formData });
-                // } else {
-                //     // Запрос для загрузки изображения для новой работы
-                //     const newWorkResponse = await api.works.worksCreate({ ...updateData, image: formData });
-                // }
-
-            }
-
-            navigate("/works-table"); // Переход на страницу с таблицей
-        } catch (error) {
-            console.error("Ошибка при обновлении/добавлении работы:", error);
-            alert("Ошибка при обновлении или добавлении работы.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (imageurl) {
-            const objectUrl = URL.createObjectURL(imageurl);
-            setImageUrlPreview(objectUrl); // Обновляем превью
-            return () => URL.revokeObjectURL(objectUrl);
-        } else {
-            setImageUrlPreview(null);
-        }
-    }, [imageurl]);
-    
     useEffect(() => {
         if (pk) {
-            fetchWork();
+            // Для редактирования работы
+            dispatch(fetchWork(pk)); 
         } else {
-            // Если pk отсутствует, сбрасываем данные формы для добавления новой работы
-            setWork(null);
+            // Если pk отсутствует, сбрасываем локальные состояния для добавления новой работы
             setTitle("");
             setPrice(0);
             setDescription("");
             setImage(null);
             setImageUrlPreview(null);
-            setLoading(false); // Отключаем состояние загрузки
         }
-    }, [pk]);
+    }, [pk, dispatch]);
 
+    // Обновляем превью изображения при изменении файла
+    useEffect(() => {
+        if (imageurl) {
+            const objectUrl = URL.createObjectURL(imageurl);
+            setImageUrlPreview(objectUrl);
+            return () => URL.revokeObjectURL(objectUrl);
+        } else {
+            setImageUrlPreview(null);
+        }
+    }, [imageurl]);
+
+    // Загружаем данные работы из Redux, если они есть
+    useEffect(() => {
+        if (work && pk) {
+            setTitle(work.title);
+            setPrice(work.price);
+            setDescription(work.description);
+            setImageUrlPreview(work.imageurl || null);
+        }
+    }, [work, pk]);
+
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if (!pk) {
+            // Добавление новой работы
+            try {
+                const newWork: Work = {
+                    title,
+                    price: Number(price),
+                    description,
+                };
+                const response = await dispatch(createWork(newWork)).unwrap();
+                const newWorkId = response.pk;
+    
+                if (imageurl) {
+                    const formData = new FormData();
+                    formData.append("pic", imageurl); 
+                    await dispatch(updateWorkImage({ workId: newWorkId, imageFile: formData }));
+                }
+    
+                navigate("/works-table");
+            } catch (error) {
+                console.error("Ошибка при добавлении работы:", error);
+                alert("Ошибка при добавлении работы.");
+            }
+        } else {
+            // Редактирование существующей работы
+            try {
+                const updatedWork: Work = {
+                    title,
+                    price: Number(price),
+                    description,
+                };
+                await dispatch(updateWork({ workId: pk!, updatedWork }));
+    
+                if (imageurl) {
+                    console.log("Отправляем файл:", imageurl);
+                    const formData = new FormData();
+                    formData.append("pic", imageurl);
+                    await dispatch(updateWorkImage({ workId: pk!, imageFile: formData }));
+                }
+    
+                navigate("/works-table");
+            } catch (error) {
+                console.error("Ошибка при обновлении работы:", error);
+                alert("Ошибка при обновлении работы.");
+            }
+        }
+    };
+    
 
     if (loading) {
         return (
@@ -132,13 +127,13 @@ const EditWorkPage: React.FC = () => {
             <Header />
             <BreadCrumbs 
                 crumbs={[
-                { label: ROUTE_LABELS.WORKS_TABLE, path: ROUTES.WORKS_TABLE },
-                { label: work?.title || "Редактирование работы" },
+                    { label: ROUTE_LABELS.WORKS_TABLE, path: ROUTES.WORKS_TABLE }, 
+                    { label: pk ? work?.title || "Редактирование работы" : "Добавить новую работу" }
                 ]}
             />
             <h1>{pk ? "Редактировать работу" : "Добавить новую работу"}</h1>
             <img
-                src={imageUrlPreview || work?.imageurl || "default_image.png"}
+                src={imageUrlPreview || (pk ? work?.imageurl : "default_image.png")}
                 alt="work image"
                 className="imggg"
             />
@@ -177,8 +172,10 @@ const EditWorkPage: React.FC = () => {
                                 const input = e.target as HTMLInputElement;
                                 if (input.files) {
                                     setImage(input.files[0]);
+                                    setImageUrlPreview(null); // Очистить старое изображение, если выбирается новое
                                 } else {
                                     setImage(null);
+                                    setImageUrlPreview(null);
                                 }
                             }}
                         />
@@ -188,10 +185,7 @@ const EditWorkPage: React.FC = () => {
 
             <Button
                 className="buttonch addorsave"
-                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                    e.preventDefault();
-                    handleSubmit();
-                }}
+                onClick={handleSubmit}
             >
                 {pk ? "Сохранить изменения" : "Добавить работу"}
             </Button>

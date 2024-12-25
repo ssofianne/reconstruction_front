@@ -46,7 +46,7 @@ function App(){
       <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
       <Route path={ROUTES.USER_PROFILE} element={<ProfilePage />} />
       <Route path= "/works" element={<WorksPage />}/>
-      <Route path={`/work/:workId`} element={<WorkDetailPage />} />
+      <Route path={`/work/:pk`} element={<WorkDetailPage />} />
       <Route path= {ROUTES.RECONSTRUCTIONS} element={<ReconstructionsListPage/>}/>
       <Route path= {'/reconstructions/:pk'} element={<ReconstructionPage/>}/>
       <Route path="*" element={<NotFoundPage />}/>

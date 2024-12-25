@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import React, { useEffect, ChangeEvent, FormEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Header from '../../components/Header/Header';
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
@@ -6,62 +6,32 @@ import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
 import WorkCard from '../../components/WorkCard/WorkCard';
 import '../../components/InputField/InputField.css';
 import { Spinner } from 'react-bootstrap';
-import { mockWorks } from '../../modules/mocks';
+// import { mockWorks } from '../../modules/mocks';
 import { ROUTES, ROUTE_LABELS } from '../../components/Routes';
 // import { RootState } from '../../redux/store';
-import { api } from '../../api'; 
-import { Work } from '../../api/Api';
+// import { api } from '../../api'; 
+// import { Work } from '../../api/Api';
 import './WorksPage.css';
+import { useAppDispatch, RootState } from '../../redux/store';
+import { fetchWorks, addWorkToDraft } from "../../redux/WorksSlice";
 
 
-import { setSearchWork, setInputValue, setFlagSearch} from '../../redux/WorksSlice';
+import { setSearchWork, setInputValue, setFlagSearch} from '../../redux/SearchSlice';
 import { useNavigate } from 'react-router-dom';
 
 const WorksPage: React.FC = () => {
     const dispatch = useDispatch();
-    const searchWork = useSelector((state: any) => state.works.searchWork);
-    const inputValue = useSelector((state: any) => state.works.inputValue);
-    const flagSearch = useSelector((state: any) => state.works.flagSearch);
-   
-    const [works, setWorks] = useState<Work[]>([]);
-    const [loadingWorks, setLoadingWorks] = useState(false);
-
-    const [count, setCount] = useState(0);
-    const [draftReconstructionID, setDraftReconstructionID] = useState(0);
+    const searchWork = useSelector((state: any) => state.search.searchWork);
+    const inputValue = useSelector((state: any) => state.search.inputValue);
+    const flagSearch = useSelector((state: any) => state.search.flagSearch);
+    const { data, loading } = useSelector((state: RootState) => state.works);
+    // const [counter, setCounter] = React.useState(data.counterWorks);
     const navigate = useNavigate();
-
-    const fetchAllWorks = async () => {
-        setLoadingWorks(true);
-        try {
-            const response = await api.works.worksList({
-                work_title: searchWork,
-            });
-        
-            // Данные находятся внутри response.data
-            const data = response.data;
-            const allWorks = data.works as Work[]; // Извлекаем works из response.data
-            console.log('Полученные данные из API:', allWorks);
-        
-            setWorks(allWorks); // Устанавливаем массив works
-
-            if (data && data.draft_reconstruction_id && data.count_of_works) {
-                const NumberOfWorks = data.count_of_works as number;
-                const draftReconstructionIDData = data.draft_reconstruction_id as number;
-
-                setCount(NumberOfWorks);
-                setDraftReconstructionID(draftReconstructionIDData);
-            }
-        } catch (error) {
-          console.error('Ошибка при загрузке данных из API:', error);
-          setWorks(mockWorks); // Используем моки в случае ошибки
-        } finally {
-          setLoadingWorks(false);
-        }
-    };
+    const appDispatch = useAppDispatch();
             
     useEffect(() => {
-        fetchAllWorks();
-    }, [searchWork, flagSearch]);
+        appDispatch(fetchWorks(searchWork));
+    }, [appDispatch, searchWork, flagSearch]);
  
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -75,21 +45,12 @@ const WorksPage: React.FC = () => {
     };
 
     const handleReconstructionClick = () => {
-        if (draftReconstructionID) {
-            navigate(`/reconstructions/${draftReconstructionID}/`);
-        }
+        navigate(`${ROUTES.RECONSTRUCTIONS}/${data.draftReconstructionID}`);
     };
 
-    const addWorkToReconstruction = async (workId: number) => {
-        try {
-            await api.reconstruction.reconstructionDraftCreate({ work_id: workId });
-            console.log(`Работа с id: ${workId} успешно добавлена в заявку.`);
-            setCount(count+1)
-            fetchAllWorks()
-        } catch (error) {
-            alert("Ошибка при добавлении работы в заявку")
-            console.error('Ошибка при добавлении работы в заявку:', error);
-        }
+    const addWorkToReconstruction = (workId: number) => {
+        if (!workId) return;
+        appDispatch(addWorkToDraft(workId));
     };
     return (
         <div>
@@ -109,14 +70,14 @@ const WorksPage: React.FC = () => {
                                 placeholder="Вид работы"
                             />
                             <button type="submit">Поиск</button>
-                            {count > 0 && (
+                            {data.counterWorks > 0 && (
                                 <div className="request">
                                     <img
                                         src="http://127.0.0.1:9000/fond-media/request.png"
                                         className="application"
                                         onClick={handleReconstructionClick}
                                     />
-                                    <div className="sum-request">{count}</div>
+                                    <div className="sum-request">{data.counterWorks}</div>
                                 </div>
                             )}
                         </div>
@@ -124,15 +85,15 @@ const WorksPage: React.FC = () => {
                 </div>
                 <div className="space">
                     <div className="container">
-                        {loadingWorks && (
+                        {loading && (
                             <div className="loadingBg">
                                 <Spinner animation="border" />
                             </div>
                         )}
-                        {flagSearch && works.length === 0 ? (
+                        {flagSearch && data.works.length === 0 ? (
                             <div>К сожалению, такая работа не найдена...</div>
                         ) : (
-                            works.map((work) => (
+                            data.works.map((work) => (
                                 <WorkCard key={work.pk} work={work} onAddWork={addWorkToReconstruction} />
                             ))
                         )}
