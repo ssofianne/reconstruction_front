@@ -40,7 +40,6 @@ const ReconstructionsListPage: FC = () => {
     const [creatorFilter, setCreatorFilter] = useState<string>('');
     const [filteredReconstructions, setFilteredReconstructions] = useState<Reconstruction[]>([]);
     const { is_staff } = useSelector((state: RootState) => state.auth);
-    // const [reconstructions, setReconstructions] = useState<Reconstruction[]>([]);
     const [startDate, setStartDate] = useState<Date | undefined>(undefined);
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
     const [status, setStatus] = useState<string>('');
@@ -50,23 +49,35 @@ const ReconstructionsListPage: FC = () => {
     const navigate = useNavigate();
 
     const handleStartDateChange = (date: Date | null) => {
-        setStartDate(date === null ? undefined : date);
+        if (date) {
+            const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000); // Корректировка на часовой пояс
+            setStartDate(localDate);  // Устанавливаем локальную дату
+        } else {
+            setStartDate(undefined);  // Если дата пустая, сбрасываем
+        }
     };
-
+    
     const handleEndDateChange = (date: Date | null) => {
-        setEndDate(date === null ? undefined : date);
-    };
+        if (date) {
+            const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000); // Корректировка на часовой пояс
+            setEndDate(localDate);  // Устанавливаем локальную дату
+        } else {
+            setEndDate(undefined);  // Если дата пустая, сбрасываем
+        }
+    };;
 
     useEffect(() => {
         translatePage();
     }, [filteredReconstructions]);
 
     useEffect(() => {
+        // Преобразуем даты в строку формата YYYY-MM-DD перед отправкой
         dispatch(fetchReconstructions({
-            startDate: startDate?.toISOString().split('T')[0] || '',
-            endDate: endDate?.toISOString().split('T')[0] || '',
+            startDate: startDate ? startDate.toISOString().split('T')[0] : '',
+            endDate: endDate ? endDate.toISOString().split('T')[0] : '',
             status,
         }));
+        console.log(startDate, endDate);
     }, [dispatch, startDate, endDate, status]);
 
     // Фильтрация по создателю
@@ -159,7 +170,7 @@ const ReconstructionsListPage: FC = () => {
                                             onChange={handleStartDateChange}
                                             selectsStart
                                             startDate={startDate}
-                                            endDate={endDate}
+                                            // endDate={endDate}
                                             placeholderText="Начальная дата"
                                             dateFormat="dd/MM/yyyy"
                                         />
@@ -173,7 +184,7 @@ const ReconstructionsListPage: FC = () => {
                                             selected={endDate}
                                             onChange={handleEndDateChange}
                                             selectsEnd
-                                            startDate={startDate}
+                                            // startDate={startDate}
                                             endDate={endDate}
                                             placeholderText="Конечная дата"
                                             dateFormat="dd/MM/yyyy"

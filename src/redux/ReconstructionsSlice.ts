@@ -23,6 +23,8 @@ export const fetchReconstructions = createAsyncThunk(
     'reconstructions/fetchReconstructions',
     async ({ startDate, endDate, status }: { startDate: string, endDate: string, status: string }, { rejectWithValue }) => {
         try {
+            console.log('Start Date:', startDate); // Проверка перед передачей
+            console.log('End Date:', endDate);
             const response = await api.reconstructions.reconstructionsList({ apply_date_start: startDate, apply_date_end: endDate, status: status });
             return response.data
         } catch {
