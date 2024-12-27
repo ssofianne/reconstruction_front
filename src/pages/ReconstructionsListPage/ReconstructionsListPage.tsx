@@ -82,19 +82,17 @@ const ReconstructionsListPage: FC = () => {
         }
     }, [creatorFilter, data.reconstructions]);
 
-    // Добавляем polling для регулярного обновления данных
     useEffect(() => {
         const intervalId = setInterval(() => {
             dispatch(fetchReconstructions({
                 startDate: startDate?.toISOString().split('T')[0] || '',
                 endDate: endDate?.toISOString().split('T')[0] || '',
                 status,
-            })); // Теперь вызов через dispatch
+            })); 
         }, 5000); // Интервал 5 секунд
     
-        // Очистка интервала при размонтировании компонента
         return () => clearInterval(intervalId);
-    }, [dispatch, status, startDate, endDate]); // Обновление по изменению этих переменных
+    }, [dispatch, status, startDate, endDate]); 
 
     const handleRowClick = (id: number | undefined) => {
         if (id) {
