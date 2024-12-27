@@ -164,13 +164,12 @@ const ReconstructionPage: FC = () => {
     const handleSubmitButtonClick = () => {
         if (reconstruction && reconstruction.pk && pk && reconstruction.status == 'draft') {
             const reconstructionNumberString = String(reconstruction.pk);
-
             api.reconstructions.reconstructionsCreateUpdate(reconstructionNumberString);
 
-            navigate(ROUTES.RECONSTRUCTIONS);
         } else {
             alert('Вы уже сформировали эту заявку');
         }
+        navigate(ROUTES.RECONSTRUCTIONS);
     };
        
     return (

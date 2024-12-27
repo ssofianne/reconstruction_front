@@ -144,7 +144,7 @@ body{
     }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 800px) {
     .container {
         grid-template-columns: repeat(2, 1fr); /* Две колонки */
         gap: 15px;
@@ -164,7 +164,7 @@ body{
 
     .work_types {
         font-size: 16px;
-        padding: 8px 15px;
+        /* padding: 8px 15px; */
     }
 }
 
