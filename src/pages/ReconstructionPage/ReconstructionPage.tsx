@@ -1,11 +1,9 @@
 import './ReconstructionPage.css';
 import { FC, useEffect, useState } from "react";
 import { Button, Col, Row, Spinner } from "react-bootstrap";
-// import InputField from "../components/InputField";
 import { BreadCrumbs } from '../../components/Breadcrumbs/BreadCrumbs';
 import { ROUTE_LABELS, ROUTES } from '../../components/Routes';
 import { useNavigate, useParams } from "react-router-dom";
-// import { ApplicationRow } from "../components/ApplicationRow";
 import Header from '../../components/Header/Header';
 import { useSelector } from "react-redux";
 import { api } from '../../api';
@@ -23,8 +21,7 @@ const ReconstructionPage: FC = () => {
   
     const navigate = useNavigate();
     const { pk } = useParams();
-    const { username } = useSelector((state: RootState) => state.auth);
-    const { is_staff } = useSelector((state: RootState) => state.auth);
+    const { is_staff, username } = useSelector((state: RootState) => state.auth);
 
     const fetchReconstruction = async () => {
         if (!pk) {
@@ -79,17 +76,12 @@ const ReconstructionPage: FC = () => {
                 .then((response) => {
                     const data = response.data;
                     
-                    // if (data.reconstruction?.creator != username) {
-                    //     setIsError(true);
-                    // }
-                    
                     setLoading(false);
                 })
                 .catch(() => {
                     setIsError(true);
                     setLoading(false);
                 });
-            // alert('Работа успешно удалена из заявки на реконструкцию') 
             await fetchReconstruction();   
         } else {
             alert('Изменение реконструкции невозможно');
@@ -105,7 +97,6 @@ const ReconstructionPage: FC = () => {
                     const response = await api.reconstructions.reconstructionsUpdate(pk, { ...reconstruction, place: newPlace });
                     const updatedReconstruction = response.data;
                     setReconstruction(updatedReconstruction);
-                    // alert('Место работ успешно изменено');
                 } catch (error) {
                     alert('Произошла ошибка при изменении места работ');
                 } finally {
@@ -132,8 +123,7 @@ const ReconstructionPage: FC = () => {
                     console.log('Объем работы изменен:', response.data);
                     
                     await fetchReconstruction();
-    
-                    // alert('Объем работы успешно изменен');
+
                 } catch (error) {
                     console.error('Ошибка при изменении объема работы:', error);
                     alert('Ошибка при изменении объема работы');
@@ -155,7 +145,7 @@ const ReconstructionPage: FC = () => {
 
             api.reconstructions.reconstructionsDelete(reconstructionNumberString);
 
-            navigate(ROUTES.RECONSTRUCTIONS);
+            navigate(ROUTES.WORKS);
         } else {
             alert('Удаление реконструкции невозможно');
         }
@@ -165,7 +155,7 @@ const ReconstructionPage: FC = () => {
         if (reconstruction && reconstruction.pk && pk && reconstruction.status == 'draft') {
             const reconstructionNumberString = String(reconstruction.pk);
             api.reconstructions.reconstructionsCreateUpdate(reconstructionNumberString);
-
+            navigate(ROUTES.WORKS);
         } else {
             alert('Вы уже сформировали эту заявку');
         }

@@ -170,7 +170,6 @@ const ReconstructionsListPage: FC = () => {
                                             onChange={handleStartDateChange}
                                             selectsStart
                                             startDate={startDate}
-                                            // endDate={endDate}
                                             placeholderText="Начальная дата"
                                             dateFormat="dd/MM/yyyy"
                                         />
@@ -184,7 +183,6 @@ const ReconstructionsListPage: FC = () => {
                                             selected={endDate}
                                             onChange={handleEndDateChange}
                                             selectsEnd
-                                            // startDate={startDate}
                                             endDate={endDate}
                                             placeholderText="Конечная дата"
                                             dateFormat="dd/MM/yyyy"
