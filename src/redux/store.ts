@@ -4,6 +4,7 @@ import worksReducer from './WorksSlice';
 import authReducer from './AuthSlice';
 import workReducer from './WorkSlice';
 import reconstructionsReducer from './ReconstructionsSlice';
+import reconstructionReducer from './ReconstructionSlice';
 import loggerMiddleware from './loggerMiddleware';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
@@ -14,6 +15,7 @@ const store = configureStore({
     works: worksReducer,
     work: workReducer,
     reconstructions: reconstructionsReducer,
+    reconstruction: reconstructionReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(loggerMiddleware), // Добавление loggerMiddleware
