@@ -33,7 +33,7 @@ const ReconstructionPage: FC = () => {
     const handleDeleteClick = (workId: number | undefined) => {
         if (!pk || !workId) return;
         appDispatch(removeWork({ reconstructionId: pk, workId: String(workId) }));
- 
+        appDispatch(fetchReconstruction(String(pk)));
     };
 
     const handleChangePlaceClick = async () => {
