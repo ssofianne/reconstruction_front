@@ -71,7 +71,6 @@ const ReconstructionsListPage: FC = () => {
     }, [filteredReconstructions]);
 
     useEffect(() => {
-        // Преобразуем даты в строку формата YYYY-MM-DD перед отправкой
         dispatch(fetchReconstructions({
             startDate: startDate ? startDate.toISOString().split('T')[0] : '',
             endDate: endDate ? endDate.toISOString().split('T')[0] : '',
